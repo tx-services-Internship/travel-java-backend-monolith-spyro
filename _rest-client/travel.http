@@ -1,0 +1,12 @@
+GET {{travel}}/demo
+Authorization: bearer {{token_employee}}
+
+###
+
+GET {{travel}}/demo/employee
+Authorization: bearer {{token_employee}}
+
+###
+
+GET {{travel}}/demo/office-manager
+Authorization: bearer {{token_office_manager}}
