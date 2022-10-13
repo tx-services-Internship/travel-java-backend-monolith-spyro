@@ -6,7 +6,6 @@ package com.tx.travel.commons.oauth.config;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 @UtilityClass
@@ -28,7 +27,6 @@ public class BaseSecurityConfig {
         .authenticated()
         .and()
         .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
   }
 }

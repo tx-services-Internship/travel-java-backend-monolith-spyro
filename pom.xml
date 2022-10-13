@@ -24,6 +24,7 @@
         <version.flyway>8.0.2</version.flyway>
         <version.hibernate>6.0.0.Final</version.hibernate>
         <version.commons.oauth>${project.version}</version.commons.oauth>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -41,9 +42,9 @@
                 <version>${version.flyway}</version>
             </dependency>
             <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>${version.hibernate}</version>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
