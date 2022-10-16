@@ -10,3 +10,32 @@ Authorization: bearer {{token_employee}}
 
 GET {{travel}}/demo/office-manager
 Authorization: bearer {{token_office_manager}}
+
+###
+POST http://localhost:8082/api/auth/signup
+Content-Type: application/json
+
+{
+  "username": "test_user",
+  "email": "test@mail.com",
+  "password": "Test123456",
+  "role": [
+    "employee"
+  ]
+}
+
+###
+POST http://localhost:8082/api/auth/signin
+Content-Type: application/json
+
+{
+  "username": "test_user",
+  "password": "Test123456"
+}
+
+###
+POST http://localhost:8082/api/auth/signout
+Content-Type: application/json
+Authorization: bearer {{token_employee}}
+
+
