@@ -1,6 +1,6 @@
 package com.tx.travel.controller;
 
-import com.tx.travel.model.ERole;
+import com.tx.travel.commons.oauth.security.ERole;
 import com.tx.travel.model.Role;
 import com.tx.travel.model.User;
 import com.tx.travel.payload.request.LoginRequest;
@@ -98,7 +98,7 @@ public class AuthController {
     if (strRoles == null) {
       Role userRole =
           roleRepository
-              .findByName(ERole.EMPLOYEE)
+              .findByName(ERole.ROLE_EMPLOYEE)
               .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
       roles.add(userRole);
     } else {
@@ -108,7 +108,7 @@ public class AuthController {
               case "admin":
                 Role adminRole =
                     roleRepository
-                        .findByName(ERole.ADMIN)
+                        .findByName(ERole.ROLE_ADMIN)
                         .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
                 roles.add(adminRole);
 
@@ -116,7 +116,7 @@ public class AuthController {
               case "mod":
                 Role modRole =
                     roleRepository
-                        .findByName(ERole.OFFICE_MANAGER)
+                        .findByName(ERole.ROLE_OFFICE_MANAGER)
                         .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
                 roles.add(modRole);
 
@@ -124,7 +124,7 @@ public class AuthController {
               default:
                 Role userRole =
                     roleRepository
-                        .findByName(ERole.EMPLOYEE)
+                        .findByName(ERole.ROLE_EMPLOYEE)
                         .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
                 roles.add(userRole);
             }

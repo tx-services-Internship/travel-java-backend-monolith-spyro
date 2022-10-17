@@ -1,33 +1,38 @@
 package com.tx.travel.controller;
 
-import static com.tx.travel.commons.oauth.security.ClientScopes.EMPLOYEE;
-import static com.tx.travel.commons.oauth.security.ClientScopes.OFFICE_MANAGER;
-
 import com.tx.travel.model.DemoDto;
 import java.util.UUID;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController()
-@RequestMapping("/demo")
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping("/api/test")
 public class DemoController {
-
-  @GetMapping()
-  public DemoDto getDemo() {
-    return DemoDto.builder().id(UUID.randomUUID()).build();
+  @GetMapping("/all")
+  public String allAccess() {
+    return "Public Content.";
   }
 
   @GetMapping("/employee")
-  @PreAuthorize("hasAuthority('" + EMPLOYEE + "')")
+  @PreAuthorize(
+      "hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_OFFICE_MANAGER') or hasRole('ROLE_ADMIN')")
   public DemoDto getDemoEmployee() {
     return DemoDto.builder().id(UUID.randomUUID()).build();
   }
 
   @GetMapping("/office-manager")
-  @PreAuthorize("hasAuthority('" + OFFICE_MANAGER + "')")
+  @PreAuthorize("hasRole('ROLE_OFFICE_MANAGER') or hasRole('ROLE_ADMIN')")
   public DemoDto getDemoOfficeManager() {
     return DemoDto.builder().id(UUID.randomUUID()).build();
+  }
+
+  @GetMapping("/admin")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public String adminAccess() {
+    return "Admin Board.";
   }
 }

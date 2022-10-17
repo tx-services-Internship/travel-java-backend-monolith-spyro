@@ -1,5 +1,6 @@
 package com.tx.travel.model;
 
+import com.tx.travel.commons.oauth.security.ERole;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
