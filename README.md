@@ -15,6 +15,7 @@ Application will be used by employees to request and office managers (OM) to pro
    ```shell
     mvn spotless:apply clean verify 
    ```
+5. Set up your code formatter by following this [guide](https://github.com/google/google-java-format#intellij-android-studio-and-other-jetbrains-ides) 
 
 ## Run local Docker setup with necessary services
 
