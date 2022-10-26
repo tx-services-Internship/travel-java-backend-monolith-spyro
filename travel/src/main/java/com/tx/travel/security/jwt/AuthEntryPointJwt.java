@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -21,10 +20,10 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
   @Override
   public void commence(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      AuthenticationException authException)
-      throws IOException, ServletException {
+      final HttpServletRequest request,
+      final HttpServletResponse response,
+      final AuthenticationException authException)
+      throws IOException {
     logger.error("Unauthorized error: {}", authException.getMessage());
 
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);

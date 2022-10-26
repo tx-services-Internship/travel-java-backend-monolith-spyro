@@ -3,7 +3,6 @@ package com.tx.travel.security;
 import com.tx.travel.security.jwt.AuthEntryPointJwt;
 import com.tx.travel.security.jwt.AuthTokenFilter;
 import com.tx.travel.security.services.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,9 +19,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
-  @Autowired UserDetailsServiceImpl userDetailsService;
+  final UserDetailsServiceImpl userDetailsService;
 
-  @Autowired private AuthEntryPointJwt unauthorizedHandler;
+  private final AuthEntryPointJwt unauthorizedHandler;
+
+  public WebSecurityConfig(
+      final UserDetailsServiceImpl userDetailsService,
+      final AuthEntryPointJwt unauthorizedHandler) {
+    this.userDetailsService = userDetailsService;
+    this.unauthorizedHandler = unauthorizedHandler;
+  }
 
   @Bean
   public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -31,7 +37,7 @@ public class WebSecurityConfig {
 
   @Bean
   public DaoAuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
     authProvider.setUserDetailsService(userDetailsService);
     authProvider.setPasswordEncoder(passwordEncoder());
@@ -40,7 +46,7 @@ public class WebSecurityConfig {
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
+  public AuthenticationManager authenticationManager(final AuthenticationConfiguration authConfig)
       throws Exception {
     return authConfig.getAuthenticationManager();
   }
@@ -51,7 +57,7 @@ public class WebSecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
     http.cors()
         .and()
         .csrf()
@@ -63,7 +69,7 @@ public class WebSecurityConfig {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
-        .antMatchers("/api/auth/**","/health", "/info", "/prometheus")
+        .antMatchers("/api/auth/**", "/health", "/info", "/prometheus")
         .permitAll()
         .antMatchers("/api/test/**")
         .permitAll()
