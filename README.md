@@ -24,6 +24,13 @@ This command (from project root) starts a default stack (including MariaDB):
 ```shell
 ./_environment/docker/docker-compose.yaml up
 ```
+Connect to the database using DBeaver and run the following SQL script
+
+```shell
+INSERT INTO roles(name) VALUES('ROLE_EMPLOYEE');
+INSERT INTO roles(name) VALUES('ROLE_OFFICE_MANAGER');
+INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+```
 
 ## JWT tokens for executing HTTP requests
 
