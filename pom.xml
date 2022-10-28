@@ -48,11 +48,6 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-core</artifactId>
-                <version>${version.flyway}</version>
-            </dependency>
-            <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
@@ -113,6 +108,7 @@
                     <configuration>
                         <ignoredDependencies>
                             <ignoredDependency>org.projectlombok:lombok</ignoredDependency>
+                            <ignoredDependency>org.flywaydb:flyway-mysql</ignoredDependency>
                             <ignoredDependency>org.springframework.*:*</ignoredDependency>
                             <ignoredDependency>org.springframework:*</ignoredDependency>
                             <ignoredDependency>org.mariadb.jdbc:mariadb-java-client</ignoredDependency>
