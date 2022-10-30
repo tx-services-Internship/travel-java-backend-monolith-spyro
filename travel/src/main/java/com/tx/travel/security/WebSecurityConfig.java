@@ -69,7 +69,14 @@ public class WebSecurityConfig {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
-        .antMatchers("/api/auth/**", "/health", "/info", "/prometheus")
+        .antMatchers(
+            "/api/auth/**",
+            "/health",
+            "/info",
+            "/prometheus",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html")
         .permitAll()
         .antMatchers("/api/test/**")
         .permitAll()
