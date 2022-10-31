@@ -1,12 +1,12 @@
 package com.tx.travel.payload.response;
 
+import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class CostCentreDto {
+public class DemoResponse {
 
-  private final String id;
-  private final String name;
+  public UUID id;
 }

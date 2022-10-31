@@ -3,11 +3,10 @@ package com.tx.travel.payload.response;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 @Builder
-public class DemoResource {
+public class CostCentreResponse {
 
-  public UUID id;
+  private final String id;
+  private final String name;
 }

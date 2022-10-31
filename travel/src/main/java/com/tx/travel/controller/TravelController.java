@@ -1,8 +1,8 @@
 package com.tx.travel.controller;
 
-import com.tx.travel.payload.response.CostCentreDto;
-import com.tx.travel.payload.response.DailyAllowanceDto;
-import com.tx.travel.payload.response.ExchangeRateDto;
+import com.tx.travel.payload.response.CostCentreResponse;
+import com.tx.travel.payload.response.DailyAllowanceResponse;
+import com.tx.travel.payload.response.ExchangeRateResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,21 +20,21 @@ public class TravelController {
   @GetMapping("/daily-allowances")
   @PreAuthorize(
       "hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_OFFICE_MANAGER') or hasRole('ROLE_ADMIN')")
-  public ResponseEntity<List<DailyAllowanceDto>> getDailyAllowances() {
+  public ResponseEntity<List<DailyAllowanceResponse>> getDailyAllowances() {
     return null;
   }
 
   @GetMapping("/cost-centres")
   @PreAuthorize(
       "hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_OFFICE_MANAGER') or hasRole('ROLE_ADMIN')")
-  public ResponseEntity<List<CostCentreDto>> getCostCentres() {
+  public ResponseEntity<List<CostCentreResponse>> getCostCentres() {
     return null;
   }
 
   @GetMapping("/exchange-rates")
   @PreAuthorize(
       "hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_OFFICE_MANAGER') or hasRole('ROLE_ADMIN')")
-  public ResponseEntity<List<ExchangeRateDto>> getDemoOfficeManager() {
+  public ResponseEntity<List<ExchangeRateResponse>> getDemoOfficeManager() {
     return null;
   }
 

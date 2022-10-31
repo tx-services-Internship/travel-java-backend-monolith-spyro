@@ -1,6 +1,6 @@
 package com.tx.travel.controller;
 
-import com.tx.travel.payload.response.DemoResource;
+import com.tx.travel.payload.response.DemoResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,14 +21,14 @@ public class DemoController {
   @GetMapping("/employee")
   @PreAuthorize(
       "hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_OFFICE_MANAGER') or hasRole('ROLE_ADMIN')")
-  public DemoResource getDemoEmployee() {
-    return DemoResource.builder().id(UUID.randomUUID()).build();
+  public DemoResponse getDemoEmployee() {
+    return DemoResponse.builder().id(UUID.randomUUID()).build();
   }
 
   @GetMapping("/office-manager")
   @PreAuthorize("hasRole('ROLE_OFFICE_MANAGER') or hasRole('ROLE_ADMIN')")
-  public DemoResource getDemoOfficeManager() {
-    return DemoResource.builder().id(UUID.randomUUID()).build();
+  public DemoResponse getDemoOfficeManager() {
+    return DemoResponse.builder().id(UUID.randomUUID()).build();
   }
 
   @GetMapping("/admin")
