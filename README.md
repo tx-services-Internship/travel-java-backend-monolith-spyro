@@ -32,3 +32,8 @@ these
 requests are generated in the [Sign in request](_rest-client/travel.http) API call which sets the cookie with JWT 
 for all other requests to use. To test the application, make sure to run the `travel.http` collection with local 
 environment
+
+## API docs
+
+In order to access API docs for the travel application on your local machine
+visit [link](http://localhost:8082/v3/api-docs/). To retrieve API specification(contract) open [Swagger](http://localhost:8082/swagger-ui/index.html).

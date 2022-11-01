@@ -31,6 +31,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <spotless-maven-plugin.version>2.27.2</spotless-maven-plugin.version>
         <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
+        <springdoc-openapi-ui.version>1.6.4</springdoc-openapi-ui.version>
     </properties>
 
     <dependencyManagement>
@@ -56,6 +57,11 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi-ui.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -113,6 +119,7 @@
                             <ignoredDependency>org.springframework:*</ignoredDependency>
                             <ignoredDependency>org.mariadb.jdbc:mariadb-java-client</ignoredDependency>
                             <ignoredDependency>com.tx.travel:commons-oauth</ignoredDependency>
+                            <ignoredDependency>org.springdoc:springdoc-openapi-ui</ignoredDependency>
                         </ignoredDependencies>
                     </configuration>
                     <executions>
