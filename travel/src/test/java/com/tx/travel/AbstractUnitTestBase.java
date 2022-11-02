@@ -1,4 +1,3 @@
 package com.tx.travel;
 
-public abstract class AbstractUnitTestBase {
-}
+public abstract class AbstractUnitTestBase {}
