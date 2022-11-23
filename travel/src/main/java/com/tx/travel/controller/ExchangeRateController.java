@@ -1,7 +1,7 @@
 package com.tx.travel.controller;
 
-import com.tx.travel.model.ExchangeRate;
 import com.tx.travel.payload.response.ExchangeRateResponse;
+import com.tx.travel.service.ExchangeRateService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +12,12 @@ import java.util.List;
 @RequestMapping("api/exchange-rates")
 public class ExchangeRateController {
 
+    private ExchangeRateService exchangeRateService;
+
+    public ExchangeRateController(ExchangeRateService exchangeRateService){
+        this.exchangeRateService = exchangeRateService;
+    }
+
     @GetMapping
     public ResponseEntity<List<ExchangeRateResponse>> getAllExchangeRates(){
 
@@ -19,7 +25,7 @@ public class ExchangeRateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExchangeRateResponse> getExchangeRateById(){
+    public ResponseEntity<ExchangeRateResponse> getExchangeRateById(@PathVariable Long id){
 
         return null;
     }
@@ -36,7 +42,7 @@ public class ExchangeRateController {
         return null;
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteExchangeRate(@PathVariable Long id){
 
         return null;
