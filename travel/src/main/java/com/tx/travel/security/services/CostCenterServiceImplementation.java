@@ -4,8 +4,10 @@ import com.tx.travel.model.CostCenter;
 import com.tx.travel.payload.request.CostCenterRequest;
 import com.tx.travel.payload.response.CostCentreResponse;
 import com.tx.travel.repository.CostCenterRepository;
+import com.tx.travel.service.exception.CostCenterCodeAlreadyExists;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 
@@ -80,6 +82,11 @@ public class CostCenterServiceImplementation implements CostCenterService{
         .name(updatedCostCenter.getName())
         .build();
 
+  }
+
+  public void findByCode(final String code) throws CostCenterCodeAlreadyExists{
+    final Optional<CostCenter> costCenterToUpdate = costCenterRepository.findByCode(code);
+    if(costCenterToUpdate.isPresent()) throw new CostCenterCodeAlreadyExists(code);
   }
 
 
