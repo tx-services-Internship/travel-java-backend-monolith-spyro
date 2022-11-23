@@ -33,7 +33,6 @@ public class ExchangeRate {
     private String code;
 
     @NotNull
-    @Unsigned
     private Float amountInRsd;
 
 }
