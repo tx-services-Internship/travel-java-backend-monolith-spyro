@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ExchangeRateRequest {
+public class ExchangeRatePostRequest {
 
     private final String code;
     private final Float amountInRsd;
