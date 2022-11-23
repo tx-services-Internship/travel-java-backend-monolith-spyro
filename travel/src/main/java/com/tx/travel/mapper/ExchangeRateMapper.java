@@ -1,16 +1,25 @@
 package com.tx.travel.mapper;
 
 import com.tx.travel.model.ExchangeRate;
-import com.tx.travel.payload.request.ExchangeRateRequest;
+import com.tx.travel.payload.request.ExchangeRatePostRequest;
+import com.tx.travel.payload.request.ExchangeRatePutRequest;
 import com.tx.travel.payload.response.ExchangeRateResponse;
 
 public class ExchangeRateMapper {
 
-    public ExchangeRate mapExchangeRateRequestToExchangeRate(ExchangeRateRequest exchangeRateRequest){
+    public ExchangeRate mapExchangeRatePostRequestToExchangeRate(ExchangeRatePostRequest exchangeRatePostRequest){
 
         return ExchangeRate.builder()
-                .code(exchangeRateRequest.getCode())
-                .amountInRsd(exchangeRateRequest.getAmountInRsd())
+                .code(exchangeRatePostRequest.getCode())
+                .amountInRsd(exchangeRatePostRequest.getAmountInRsd())
+                .build();
+    }
+
+    public ExchangeRate mapExchangeRatePutRequestToExchangeRate(ExchangeRatePutRequest exchangeRatePutRequest){
+
+        return ExchangeRate.builder()
+                .code(exchangeRatePutRequest.getCode())
+                .amountInRsd(exchangeRatePutRequest.getAmountInRsd())
                 .build();
     }
 
