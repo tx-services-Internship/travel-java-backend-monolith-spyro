@@ -10,25 +10,33 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @Table(
     name = "cost_centers"
     )
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CostCenter {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private Long id;
 
   @NotBlank
-  @NotNull
   @Column(unique = true)
   private String code;
 
 
   @NotBlank
-  @NotNull
   private String name;
+
 
 }

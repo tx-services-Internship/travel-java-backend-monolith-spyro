@@ -7,6 +7,9 @@ import lombok.Data;
 @Builder
 public class CostCentreResponse {
 
-  private final String id;
+  private final Long id;
+  private final String code;
   private final String name;
+
+
 }
