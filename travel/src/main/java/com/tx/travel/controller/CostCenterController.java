@@ -6,9 +6,11 @@ import com.tx.travel.payload.request.CostCenterRequest;
 import com.tx.travel.payload.response.CostCentreResponse;
 import com.tx.travel.security.services.CostCenterService;
 import com.tx.travel.service.exception.CostCenterCodeAlreadyExists;
+import com.tx.travel.service.exception.CostCenterNotPresent;
 import com.tx.travel.service.exception.EmailAlreadyExistsException;
 import com.tx.travel.service.exception.UsernameAlreadyExistsException;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,11 +43,17 @@ public class CostCenterController {
 
   @GetMapping("/{id}")
   public ResponseEntity<CostCentreResponse> fetchCostCenterById(@PathVariable("id") Long id){
+
+    try{
     return ResponseEntity.ok().body(costCenterService.fetchCostCenterById(id));
+    } catch (CostCenterNotPresent e){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+    }
+
   }
 
   @PostMapping()
-  public ResponseEntity<CostCentreResponse> saveCostCenter(@RequestBody CostCenterRequest costCenter){
+  public ResponseEntity<CostCentreResponse> saveCostCenter(@Valid @RequestBody CostCenterRequest costCenter){
     try {
       costCenterService.findByCode(costCenter.getCode());
 
@@ -59,18 +67,29 @@ public class CostCenterController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteCostCenterById(@PathVariable("id") Long id){
+
+    try{
+      costCenterService.findById(id);
+    } catch (CostCenterNotPresent e){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+    }
+
     costCenterService.deleteCostCenterById(id);
     return ResponseEntity.noContent().build();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<CostCentreResponse> updateCostCenterById(@PathVariable("id") Long id,
-      @RequestBody CostCenterRequest costCenter){
+      @Valid @RequestBody CostCenterRequest costCenter){
     try {
+
       costCenterService.findByCode(costCenter.getCode());
+      costCenterService.findById(id);
 
     } catch (CostCenterCodeAlreadyExists e) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+    } catch (CostCenterNotPresent e){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 
     return ResponseEntity.ok().body(costCenterService.updateCostCenterById(id, costCenter));
