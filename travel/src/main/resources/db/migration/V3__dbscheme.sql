@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS `expenses` (
     `id` VARCHAR(36) NOT NULL,
     `claim` VARCHAR(255) NOT NULL,
     `description` VARCHAR(255),
-    `amount` INT DEFAULT 1,
-    `currency` VARCHAR(20),
+    `amount` TINYINT UNSIGNED DEFAULT 1,
+    `currency_code` VARCHAR(3),
     `tef_id` VARCHAR(36) NOT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `FK_expense_tef_id_constraint` FOREIGN KEY (`tef_id`) REFERENCES `travel_expense_forms` (`id`)
