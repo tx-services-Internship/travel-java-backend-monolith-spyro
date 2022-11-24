@@ -55,12 +55,12 @@ CREATE TABLE IF NOT EXISTS `travel_authorization_forms` (
 CREATE TABLE IF NOT EXISTS `trips` (
     `id` VARCHAR(36) NOT NULL,
     `taf_id` VARCHAR(36) NOT NULL,
-    `tef_id` VARCHAR(36) NOT NULL,
+    `tef_id` VARCHAR(36),
 
     `departure_date` TIMESTAMP NOT NULL,
     `status` VARCHAR(30) NOT NULL,
-    `country` VARCHAR(30) NOT NULL,
-    `city` VARCHAR(30) NOT NULL,
+    `country` VARCHAR(50) NOT NULL,
+    `city` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `FK_trip_taf_id_constraint` FOREIGN KEY (`taf_id`) REFERENCES `travel_authorization_forms` (`id`),
     CONSTRAINT `FK_trip_tef_id_constraint` FOREIGN KEY (`tef_id`) REFERENCES `travel_expense_forms` (`id`)
