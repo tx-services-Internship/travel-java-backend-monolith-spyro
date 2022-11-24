@@ -71,11 +71,11 @@ CREATE TABLE IF NOT EXISTS `trips` (
     );
 
 CREATE TABLE IF NOT EXISTS `daily_allowances` (
-    `id` BIGINT(20) NOT NULL,
-    `country` VARCHAR(50) NOT NULL,
-    `cost` FLOAT NOT NULL,
+    `id` BIGINT(5) NOT NULL,
+    `region` VARCHAR(100) NOT NULL,
+    `amount` DECIMAL(7,6) NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_country` (`country`)
+    UNIQUE KEY `UK_region` (`region`)
 );
 
 CREATE TABLE IF NOT EXISTS `cost_centers` (
