@@ -2,7 +2,6 @@ package com.tx.travel.controller;
 
 
 import com.tx.travel.mapper.CostCenterMapperImplementation;
-import com.tx.travel.mapper.CostCenterMapperInterface;
 import com.tx.travel.model.CostCenter;
 import com.tx.travel.payload.request.CostCenterRequest;
 import com.tx.travel.payload.response.CostCentreResponse;
@@ -30,7 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class CostCenterController {
 
   final CostCenterService costCenterService;
-  final CostCenterMapperInterface costCenterMapper;
+  final CostCenterMapperImplementation costCenterMapper;
 
   public CostCenterController(final CostCenterServiceImplementation costCenterService
       , final CostCenterMapperImplementation costCenterMapper){

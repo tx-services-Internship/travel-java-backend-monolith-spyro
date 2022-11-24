@@ -1,16 +1,12 @@
 package com.tx.travel.security.services;
 
 import com.tx.travel.model.CostCenter;
-import com.tx.travel.payload.request.CostCenterRequest;
-import com.tx.travel.payload.response.CostCentreResponse;
 import com.tx.travel.repository.CostCenterRepository;
 import com.tx.travel.service.exception.CostCenterCodeAlreadyExists;
 import com.tx.travel.service.exception.CostCenterNotPresent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +28,6 @@ public class CostCenterServiceImplementation implements CostCenterService{
   }
 
   @Override
-  @Transactional(readOnly = true)
   public CostCenter fetchCostCenterById(Long id) throws CostCenterNotPresent{
 
     Optional<CostCenter> fetchedCostCenter = costCenterRepository.findById(id);
@@ -59,7 +54,7 @@ public class CostCenterServiceImplementation implements CostCenterService{
   }
 
   @Override
-  public CostCenter updateCostCenterById(Long id, final CostCenter costCenter)
+  public CostCenter updateCostCenterById(Long id, @Valid final CostCenter costCenter)
       throws CostCenterNotPresent, CostCenterCodeAlreadyExists{
 
     if (costCenterRepository.findById(id).isEmpty()) throw new CostCenterNotPresent(id);

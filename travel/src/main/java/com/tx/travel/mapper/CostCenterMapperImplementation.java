@@ -7,9 +7,8 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class CostCenterMapperImplementation implements CostCenterMapperInterface{
+public class CostCenterMapperImplementation{
 
-  @Override
   public CostCenter CostCenterRequestToCostCenter(final CostCenterRequest costCenterRequest) {
     return CostCenterRequestToCostCenter(costCenterRequest, null);
   }
@@ -22,7 +21,6 @@ public class CostCenterMapperImplementation implements CostCenterMapperInterface
         .build();
   }
 
-  @Override
   public CostCentreResponse CostCenterToCostCenterResponse(final CostCenter costCenter) {
     return CostCentreResponse.builder()
         .id(costCenter.getId())
