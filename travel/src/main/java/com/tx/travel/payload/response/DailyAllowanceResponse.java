@@ -3,15 +3,17 @@ package com.tx.travel.payload.response;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 public class DailyAllowanceResponse {
 
   private final Long id;
   private final String region;
-  private final double amount;
+  private final BigDecimal amount;
 
-  public DailyAllowanceResponse(final Long id, final String region, final double amount) {
+  public DailyAllowanceResponse(final Long id, final String region, final BigDecimal amount) {
     this.region = region;
     this.amount = amount;
     this.id = id;
@@ -19,7 +21,7 @@ public class DailyAllowanceResponse {
 
   public DailyAllowanceResponse() {
     this.region = null;
-    this.amount = 0;
+    this.amount = null;
     this.id = null;
   }
 

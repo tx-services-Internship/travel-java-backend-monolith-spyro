@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @Builder
 @Entity
@@ -31,16 +32,16 @@ public class DailyAllowance {
         @NotNull
         @Setter
         @Getter //7, 6
-        private double amount; //big decimal
+        private BigDecimal amount; //big decimal
 
         public DailyAllowance() {}
 
-        public DailyAllowance(String region, double amount) {
+        public DailyAllowance(String region, BigDecimal amount) {
             this.region = region;
             this.amount = amount;
         }
 
-        public DailyAllowance(Long id, String region, double amount) {
+        public DailyAllowance(Long id, String region, BigDecimal amount) {
                 this.region = region;
                 this.amount = amount;
                 this.id = id;

@@ -81,7 +81,8 @@ public class DailyAllowanceService {
         if(dailyAllowance.isPresent()){
             DailyAllowance dailyAllowanceOld = dailyAllowance.get();
             dailyAllowanceOld.setAmount(newDailyAllowanceInfo.getAmount());
-            dailyAllowanceRepository.save(dailyAllowanceOld);
+            //dailyAllowanceRepository.save(dailyAllowanceOld);
+            dailyAllowanceRepository.save(daNew);
         }else {
             throw new DailyAllowanceNotFoundException(newDailyAllowanceInfo.getRegion());
         }
