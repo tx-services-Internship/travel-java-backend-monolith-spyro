@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS `travel_expense_forms` (
     `id` VARCHAR(36) NOT NULL,
 
     `business_trip_end_date` TIMESTAMP NOT NULL,
-    `breakfasts_provided` INT(3) DEFAULT 0,
-    `lunches_provided` INT(3) DEFAULT 0,
-    `dinners_provided` INT(3) DEFAULT 0,
+    `breakfasts_provided` TINYINT UNSIGNED DEFAULT 0,
+    `lunches_provided` TINYINT UNSIGNED DEFAULT 0,
+    `dinners_provided` TINYINT UNSIGNED DEFAULT 0,
     `submission_date` TIMESTAMP NOT NULL,
     PRIMARY KEY (`id`)
     );
