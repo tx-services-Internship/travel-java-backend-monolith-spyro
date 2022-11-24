@@ -15,7 +15,4 @@ public interface CostCenterService {
   public void deleteCostCenterById(Long id);
   public CostCentreResponse updateCostCenterById(Long id, CostCenterRequest costCenter);
 
-  public void findByCode(final String code) throws CostCenterCodeAlreadyExists;
-
-  public void findById(final Long id) throws CostCenterNotPresent;
 }

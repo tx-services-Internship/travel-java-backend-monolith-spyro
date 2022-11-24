@@ -12,6 +12,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -22,7 +23,6 @@ public class CostCenterServiceImplementation implements CostCenterService{
   public CostCenterServiceImplementation(final CostCenterRepository costCenterRepository){
     this.costCenterRepository = costCenterRepository;
   }
-
 
   @Override
   public List<CostCentreResponse> fetchCostCenters() {
@@ -40,9 +40,12 @@ public class CostCenterServiceImplementation implements CostCenterService{
   }
 
   @Override
+  @Transactional(readOnly = true)
   public CostCentreResponse fetchCostCenterById(Long id) throws CostCenterNotPresent{
+
     Optional<CostCenter> fetchedCostCenter = costCenterRepository.findById(id);
     if(fetchedCostCenter.isEmpty()) throw new CostCenterNotPresent(id);
+
     CostCenter costCenter = fetchedCostCenter.get();
     return CostCentreResponse.builder()
         .id(costCenter.getId())
@@ -52,7 +55,12 @@ public class CostCenterServiceImplementation implements CostCenterService{
   }
 
   @Override
-  public CostCentreResponse saveCostCenter(@Valid CostCenterRequest costCenter) {
+  public CostCentreResponse saveCostCenter(@Valid CostCenterRequest costCenter)
+      throws CostCenterCodeAlreadyExists{
+
+    if(costCenterRepository.findByCode(costCenter.getCode()).isPresent())
+      throw new CostCenterCodeAlreadyExists(costCenter.getCode());
+
     CostCenter addedCostCenter = costCenterRepository.save(
         CostCenter.builder()
             .name(costCenter.getName())
@@ -67,13 +75,19 @@ public class CostCenterServiceImplementation implements CostCenterService{
   }
 
   @Override
-  public void deleteCostCenterById(Long id) {
-
+  public void deleteCostCenterById(Long id) throws CostCenterNotPresent {
+    if(costCenterRepository.findById(id).isEmpty()) throw new CostCenterNotPresent(id);
     costCenterRepository.deleteById(id);
   }
 
   @Override
-  public CostCentreResponse updateCostCenterById(Long id, @Valid CostCenterRequest costCenter) {
+  public CostCentreResponse updateCostCenterById(Long id, final CostCenterRequest costCenter)
+      throws CostCenterNotPresent, CostCenterCodeAlreadyExists{
+
+    if (costCenterRepository.findById(id).isEmpty()) throw new CostCenterNotPresent(id);
+    else if (costCenterRepository.findByCode(costCenter.getCode()).isPresent() &&
+    !costCenterRepository.findById(id).get().getCode().equals(costCenter.getCode()))
+      throw new CostCenterCodeAlreadyExists(costCenter.getCode());
 
     CostCenter updatedCostCenter = costCenterRepository.save(
         CostCenter.builder()
@@ -90,16 +104,5 @@ public class CostCenterServiceImplementation implements CostCenterService{
         .build();
 
   }
-
-  public void findByCode(@NotNull final String code) throws CostCenterCodeAlreadyExists{
-    final Optional<CostCenter> costCenter = costCenterRepository.findByCode(code);
-    if(costCenter.isPresent()) throw new CostCenterCodeAlreadyExists(code);
-  }
-
-  public void findById(final Long id) throws CostCenterNotPresent{
-    final Optional<CostCenter> costCenter = costCenterRepository.findById(id);
-    if(costCenter.isEmpty()) throw new CostCenterNotPresent(id);
-  }
-
 
 }

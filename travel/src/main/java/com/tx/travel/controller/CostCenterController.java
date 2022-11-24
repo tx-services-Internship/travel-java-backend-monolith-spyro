@@ -45,7 +45,9 @@ public class CostCenterController {
   public ResponseEntity<CostCentreResponse> fetchCostCenterById(@PathVariable("id") Long id){
 
     try{
+
     return ResponseEntity.ok().body(costCenterService.fetchCostCenterById(id));
+
     } catch (CostCenterNotPresent e){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
@@ -54,14 +56,14 @@ public class CostCenterController {
 
   @PostMapping()
   public ResponseEntity<CostCentreResponse> saveCostCenter(@Valid @RequestBody CostCenterRequest costCenter){
-    try {
-      costCenterService.findByCode(costCenter.getCode());
+
+    try{
+
+      return ResponseEntity.ok().body(costCenterService.saveCostCenter(costCenter));
 
     } catch (CostCenterCodeAlreadyExists e) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
     }
-
-    return ResponseEntity.ok().body(costCenterService.saveCostCenter(costCenter));
 
   }
 
@@ -69,30 +71,28 @@ public class CostCenterController {
   public ResponseEntity<?> deleteCostCenterById(@PathVariable("id") Long id){
 
     try{
-      costCenterService.findById(id);
+
+    costCenterService.deleteCostCenterById(id);
+
     } catch (CostCenterNotPresent e){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 
-    costCenterService.deleteCostCenterById(id);
     return ResponseEntity.noContent().build();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<CostCentreResponse> updateCostCenterById(@PathVariable("id") Long id,
       @Valid @RequestBody CostCenterRequest costCenter){
-    try {
+    try{
 
-      costCenterService.findByCode(costCenter.getCode());
-      costCenterService.findById(id);
+    return ResponseEntity.ok().body(costCenterService.updateCostCenterById(id, costCenter));
 
     } catch (CostCenterCodeAlreadyExists e) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
     } catch (CostCenterNotPresent e){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
-
-    return ResponseEntity.ok().body(costCenterService.updateCostCenterById(id, costCenter));
 
   }
 
