@@ -10,6 +10,4 @@ public class CostCentreResponse {
   private final Long id;
   private final String code;
   private final String name;
-
-
 }

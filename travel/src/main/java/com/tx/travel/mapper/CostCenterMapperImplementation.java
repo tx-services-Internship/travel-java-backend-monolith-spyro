@@ -5,15 +5,15 @@ import com.tx.travel.payload.request.CostCenterRequest;
 import com.tx.travel.payload.response.CostCentreResponse;
 import org.springframework.stereotype.Component;
 
-
 @Component
-public class CostCenterMapperImplementation{
+public class CostCenterMapperImplementation {
 
   public CostCenter CostCenterRequestToCostCenter(final CostCenterRequest costCenterRequest) {
     return CostCenterRequestToCostCenter(costCenterRequest, null);
   }
 
-  public CostCenter CostCenterRequestToCostCenter(final CostCenterRequest costCenterRequest, final Long id){
+  public CostCenter CostCenterRequestToCostCenter(
+      final CostCenterRequest costCenterRequest, final Long id) {
     return CostCenter.builder()
         .id(id)
         .code(costCenterRequest.getCode())
@@ -28,6 +28,4 @@ public class CostCenterMapperImplementation{
         .name(costCenter.getName())
         .build();
   }
-
-
 }

@@ -1,6 +1,5 @@
 package com.tx.travel.controller;
 
-
 import com.tx.travel.mapper.CostCenterMapperImplementation;
 import com.tx.travel.model.CostCenter;
 import com.tx.travel.payload.request.CostCenterRequest;
@@ -31,19 +30,19 @@ public class CostCenterController {
   final CostCenterService costCenterService;
   final CostCenterMapperImplementation costCenterMapper;
 
-  public CostCenterController(final CostCenterServiceImplementation costCenterService
-      , final CostCenterMapperImplementation costCenterMapper){
+  public CostCenterController(
+      final CostCenterServiceImplementation costCenterService,
+      final CostCenterMapperImplementation costCenterMapper) {
     this.costCenterService = costCenterService;
     this.costCenterMapper = costCenterMapper;
   }
 
-
   @GetMapping()
-  public ResponseEntity<List<CostCentreResponse>> fetchCostCenters(){
+  public ResponseEntity<List<CostCentreResponse>> fetchCostCenters() {
 
     List<CostCenter> fetchedList = costCenterService.fetchCostCenters();
     List<CostCentreResponse> responseList = new ArrayList<>();
-    for(CostCenter costCenter: fetchedList){
+    for (CostCenter costCenter : fetchedList) {
       responseList.add(costCenterMapper.CostCenterToCostCenterResponse(costCenter));
     }
 
@@ -51,42 +50,43 @@ public class CostCenterController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<CostCentreResponse> fetchCostCenterById(@PathVariable("id") Long id){
+  public ResponseEntity<CostCentreResponse> fetchCostCenterById(@PathVariable("id") Long id) {
 
-    try{
+    try {
 
       CostCenter fetchedCostCenter = costCenterService.fetchCostCenterById(id);
-      return ResponseEntity.ok().body(costCenterMapper.CostCenterToCostCenterResponse(fetchedCostCenter));
+      return ResponseEntity.ok()
+          .body(costCenterMapper.CostCenterToCostCenterResponse(fetchedCostCenter));
 
-    } catch (CostCenterNotPresent e){
+    } catch (CostCenterNotPresent e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
-
   }
 
   @PostMapping()
-  public ResponseEntity<CostCentreResponse> saveCostCenter(@Valid @RequestBody CostCenterRequest costCenterRequest){
+  public ResponseEntity<CostCentreResponse> saveCostCenter(
+      @Valid @RequestBody CostCenterRequest costCenterRequest) {
 
-    try{
-      CostCenter savedCostCenter = costCenterService.saveCostCenter(
-          costCenterMapper.CostCenterRequestToCostCenter(costCenterRequest)
-      );
-      return ResponseEntity.ok().body(costCenterMapper.CostCenterToCostCenterResponse(savedCostCenter));
+    try {
+      CostCenter savedCostCenter =
+          costCenterService.saveCostCenter(
+              costCenterMapper.CostCenterRequestToCostCenter(costCenterRequest));
+      return ResponseEntity.ok()
+          .body(costCenterMapper.CostCenterToCostCenterResponse(savedCostCenter));
 
     } catch (CostCenterCodeAlreadyExists e) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
     }
-
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteCostCenterById(@PathVariable("id") Long id){
+  public ResponseEntity<?> deleteCostCenterById(@PathVariable("id") Long id) {
 
-    try{
+    try {
 
-    costCenterService.deleteCostCenterById(id);
+      costCenterService.deleteCostCenterById(id);
 
-    } catch (CostCenterNotPresent e){
+    } catch (CostCenterNotPresent e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 
@@ -94,24 +94,19 @@ public class CostCenterController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<CostCentreResponse> updateCostCenterById(@PathVariable("id") Long id,
-      @Valid @RequestBody CostCenterRequest costCenterRequest){
-    try{
-      CostCenter costCenterToUpdate = costCenterMapper.CostCenterRequestToCostCenter(costCenterRequest, id);
+  public ResponseEntity<CostCentreResponse> updateCostCenterById(
+      @PathVariable("id") Long id, @Valid @RequestBody CostCenterRequest costCenterRequest) {
+    try {
+      CostCenter costCenterToUpdate =
+          costCenterMapper.CostCenterRequestToCostCenter(costCenterRequest, id);
       CostCenter updatedCostCenter = costCenterService.updateCostCenterById(id, costCenterToUpdate);
-    return ResponseEntity.ok().body(costCenterMapper.CostCenterToCostCenterResponse(updatedCostCenter));
+      return ResponseEntity.ok()
+          .body(costCenterMapper.CostCenterToCostCenterResponse(updatedCostCenter));
 
     } catch (CostCenterCodeAlreadyExists e) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
-    } catch (CostCenterNotPresent e){
+    } catch (CostCenterNotPresent e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
-
   }
-
-
-
-
-
-
 }
