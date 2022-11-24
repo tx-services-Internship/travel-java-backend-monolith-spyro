@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `exchange_rates` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `code` VARCHAR(20) DEFAULT NULL,
-    `amount_in_rsd` FLOAT UNSIGNED DEFAULT NULL,
+    `code` VARCHAR(3) DEFAULT NULL,
+    `amount_in_rsd` DECIMAL(7,6) UNSIGNED DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `UK_code` (`code`)
     );
