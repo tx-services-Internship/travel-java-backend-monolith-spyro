@@ -1,5 +1,6 @@
 package com.tx.travel.security.services;
 
+import com.tx.travel.model.CostCenter;
 import com.tx.travel.payload.request.CostCenterRequest;
 import com.tx.travel.payload.response.CostCentreResponse;
 import com.tx.travel.service.exception.CostCenterCodeAlreadyExists;
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 
 public interface CostCenterService {
-  public List<CostCentreResponse> fetchCostCenters();
-  public CostCentreResponse fetchCostCenterById(Long id);
-  public CostCentreResponse saveCostCenter(CostCenterRequest costCenter);
+  public List<CostCenter> fetchCostCenters();
+  public CostCenter fetchCostCenterById(Long id);
+  public CostCenter saveCostCenter(CostCenter costCenter);
   public void deleteCostCenterById(Long id);
-  public CostCentreResponse updateCostCenterById(Long id, CostCenterRequest costCenter);
+  public CostCenter updateCostCenterById(Long id, CostCenter costCenter);
 
 }
