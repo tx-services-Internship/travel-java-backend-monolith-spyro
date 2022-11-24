@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `travel_expense_forms` (
     `breakfasts_provided` INT(3) DEFAULT 0,
     `lunches_provided` INT(3) DEFAULT 0,
     `dinners_provided` INT(3) DEFAULT 0,
-    `submission_date` DATE NOT NULL,
+    `submission_date` TIMESTAMP NOT NULL,
     PRIMARY KEY (`id`)
     );
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `travel_authorization_forms` (
     `breakfast_fee` FLOAT NOT NULL,
     `lunch_fee` FLOAT NOT NULL,
     `dinner_fee` FLOAT NOT NULL,
-    `submission_date` DATE NOT NULL,
+    `submission_date` TIMESTAMP NOT NULL,
     PRIMARY KEY (`id`)
     );
 
