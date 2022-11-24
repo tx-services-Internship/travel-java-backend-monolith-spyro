@@ -9,9 +9,7 @@ CREATE TABLE IF NOT EXISTS `exchange_rates` (
 CREATE TABLE IF NOT EXISTS `travel_expense_forms` (
     `id` VARCHAR(36) NOT NULL,
 
-    `departure_time` TIME NOT NULL,
-    `business_trip_end_date` DATE NOT NULL,
-    `business_trip_end_time` TIME NOT NULL,
+    `business_trip_end_date` TIMESTAMP NOT NULL,
     `breakfasts_provided` INT(3) DEFAULT 0,
     `lunches_provided` INT(3) DEFAULT 0,
     `dinners_provided` INT(3) DEFAULT 0,
@@ -33,10 +31,8 @@ CREATE TABLE IF NOT EXISTS `expenses` (
 CREATE TABLE IF NOT EXISTS `travel_authorization_forms` (
     `id` VARCHAR(36) NOT NULL,
 
-    `departure_time` TIME NOT NULL,
-    `business_trip_end_date` DATE NOT NULL,
-    `business_trip_end_time` TIME NOT NULL,
-    `arrival_date` DATE NOT NULL,
+    `business_trip_end_date` TIMESTAMP NOT NULL,
+    `arrival_date` TIMESTAMP NOT NULL,
     `accommodation` VARCHAR(255) NOT NULL,
     `num_breakfast` INT(3) NOT NULL,
     `num_lunch` INT(3) NOT NULL,
@@ -61,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `trips` (
     `taf_id` VARCHAR(36) NOT NULL,
     `tef_id` VARCHAR(36) NOT NULL,
 
-    `departure_date` DATE NOT NULL,
+    `departure_date` TIMESTAMP NOT NULL,
     `status` VARCHAR(30) NOT NULL,
     `country` VARCHAR(30) NOT NULL,
     `city` VARCHAR(30) NOT NULL,
