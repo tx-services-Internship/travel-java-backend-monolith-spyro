@@ -28,6 +28,15 @@ public class DailyAllowanceMapper {
                 .build();
     }
 
+    public DailyAllowance mapDailyAllowanceRequestToDailyAllowanceUpdate(DailyAllowanceRequest dailyAllowanceRequest, Long id){
+
+        return DailyAllowance.builder()
+                .id(id)
+                .amount(dailyAllowanceRequest.getAmount())
+                .region(dailyAllowanceRequest.getRegion())
+                .build();
+    }
+
     public DailyAllowanceResponse mapDailyAllowanceToDailyAllowanceResponse(DailyAllowance dailyAllowance){
 
         return DailyAllowanceResponse.builder()

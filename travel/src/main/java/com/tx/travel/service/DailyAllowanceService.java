@@ -74,14 +74,11 @@ public class DailyAllowanceService {
 
     public DailyAllowanceRequest updateDailyAllowance(final DailyAllowanceRequest newDailyAllowanceInfo, final Long id) {
 
-        DailyAllowance daNew = dailyAllowanceMapper.mapDailyAllowanceRequestToDailyAllowance(newDailyAllowanceInfo);
+        DailyAllowance daNew = dailyAllowanceMapper.mapDailyAllowanceRequestToDailyAllowanceUpdate(newDailyAllowanceInfo, id);
 
         Optional<DailyAllowance> dailyAllowance = dailyAllowanceRepository.findByRegion(newDailyAllowanceInfo.getRegion());
 
         if(dailyAllowance.isPresent()){
-            DailyAllowance dailyAllowanceOld = dailyAllowance.get();
-            dailyAllowanceOld.setAmount(newDailyAllowanceInfo.getAmount());
-            //dailyAllowanceRepository.save(dailyAllowanceOld);
             dailyAllowanceRepository.save(daNew);
         }else {
             throw new DailyAllowanceNotFoundException(newDailyAllowanceInfo.getRegion());
