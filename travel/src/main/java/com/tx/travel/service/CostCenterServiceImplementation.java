@@ -1,4 +1,4 @@
-package com.tx.travel.security.services;
+package com.tx.travel.service;
 
 import com.tx.travel.model.CostCenter;
 import com.tx.travel.repository.CostCenterRepository;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CostCenterServiceImplementation implements CostCenterService {
 
-  final CostCenterRepository costCenterRepository;
+  private final CostCenterRepository costCenterRepository;
 
   public CostCenterServiceImplementation(final CostCenterRepository costCenterRepository) {
     this.costCenterRepository = costCenterRepository;

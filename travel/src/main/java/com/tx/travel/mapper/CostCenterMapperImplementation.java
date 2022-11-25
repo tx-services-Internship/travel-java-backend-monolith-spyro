@@ -2,7 +2,7 @@ package com.tx.travel.mapper;
 
 import com.tx.travel.model.CostCenter;
 import com.tx.travel.payload.request.CostCenterRequest;
-import com.tx.travel.payload.response.CostCentreResponse;
+import com.tx.travel.payload.response.CostCenterResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,8 +21,8 @@ public class CostCenterMapperImplementation {
         .build();
   }
 
-  public CostCentreResponse CostCenterToCostCenterResponse(final CostCenter costCenter) {
-    return CostCentreResponse.builder()
+  public CostCenterResponse CostCenterToCostCenterResponse(final CostCenter costCenter) {
+    return CostCenterResponse.builder()
         .id(costCenter.getId())
         .code(costCenter.getCode())
         .name(costCenter.getName())

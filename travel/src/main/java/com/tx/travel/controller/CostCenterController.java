@@ -3,9 +3,9 @@ package com.tx.travel.controller;
 import com.tx.travel.mapper.CostCenterMapperImplementation;
 import com.tx.travel.model.CostCenter;
 import com.tx.travel.payload.request.CostCenterRequest;
-import com.tx.travel.payload.response.CostCentreResponse;
-import com.tx.travel.security.services.CostCenterService;
-import com.tx.travel.security.services.CostCenterServiceImplementation;
+import com.tx.travel.payload.response.CostCenterResponse;
+import com.tx.travel.service.CostCenterService;
+import com.tx.travel.service.CostCenterServiceImplementation;
 import com.tx.travel.service.exception.CostCenterCodeAlreadyExists;
 import com.tx.travel.service.exception.CostCenterNotPresent;
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/cost-centers")
 public class CostCenterController {
 
-  final CostCenterService costCenterService;
-  final CostCenterMapperImplementation costCenterMapper;
+  private final CostCenterService costCenterService;
+  private final CostCenterMapperImplementation costCenterMapper;
 
   public CostCenterController(
       final CostCenterServiceImplementation costCenterService,
@@ -38,10 +38,10 @@ public class CostCenterController {
   }
 
   @GetMapping()
-  public ResponseEntity<List<CostCentreResponse>> fetchCostCenters() {
+  public ResponseEntity<List<CostCenterResponse>> fetchCostCenters() {
 
     List<CostCenter> fetchedList = costCenterService.fetchCostCenters();
-    List<CostCentreResponse> responseList = new ArrayList<>();
+    List<CostCenterResponse> responseList = new ArrayList<>();
     for (CostCenter costCenter : fetchedList) {
       responseList.add(costCenterMapper.CostCenterToCostCenterResponse(costCenter));
     }
@@ -50,7 +50,7 @@ public class CostCenterController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<CostCentreResponse> fetchCostCenterById(@PathVariable("id") Long id) {
+  public ResponseEntity<CostCenterResponse> fetchCostCenterById(@PathVariable("id") Long id) {
 
     try {
 
@@ -64,7 +64,7 @@ public class CostCenterController {
   }
 
   @PostMapping()
-  public ResponseEntity<CostCentreResponse> saveCostCenter(
+  public ResponseEntity<CostCenterResponse> saveCostCenter(
       @Valid @RequestBody CostCenterRequest costCenterRequest) {
 
     try {
@@ -94,7 +94,7 @@ public class CostCenterController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<CostCentreResponse> updateCostCenterById(
+  public ResponseEntity<CostCenterResponse> updateCostCenterById(
       @PathVariable("id") Long id, @Valid @RequestBody CostCenterRequest costCenterRequest) {
     try {
       CostCenter costCenterToUpdate =
