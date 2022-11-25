@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `trips` (
     );
 
 CREATE TABLE IF NOT EXISTS `daily_allowances` (
-    `id` BIGINT(5) NOT NULL,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `region` VARCHAR(100) NOT NULL,
     `amount` DECIMAL(13,6) NOT NULL,
     PRIMARY KEY (`id`),
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `daily_allowances` (
 );
 
 CREATE TABLE IF NOT EXISTS `cost_centers` (
-    `id` BIGINT(20) NOT NULL,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `code` VARCHAR(7) NOT NULL,
     `name` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`id`),
