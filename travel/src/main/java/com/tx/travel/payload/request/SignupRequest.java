@@ -1,9 +1,8 @@
 package com.tx.travel.payload.request;
 
-import javax.persistence.Column;
+import java.util.Set;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class SignupRequest {
