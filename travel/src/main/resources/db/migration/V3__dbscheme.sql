@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS `exchange_rates` (
 
 CREATE TABLE IF NOT EXISTS `travel_expense_forms` (
     `id` VARCHAR(36) NOT NULL,
-    `business_trip_end_date` TIMESTAMP NOT NULL,
     `breakfasts_provided` INT UNSIGNED DEFAULT 0,
     `lunches_provided` INT UNSIGNED DEFAULT 0,
     `dinners_provided` INT UNSIGNED DEFAULT 0,
