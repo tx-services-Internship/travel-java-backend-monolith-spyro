@@ -8,6 +8,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -40,12 +42,20 @@ public class JwtUtils {
   }
 
   public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-    String jwt = generateTokenFromUsername(userPrincipal.getUsername());
+    String jwt = generateTokenFromUser(userPrincipal);
     return ResponseCookie.from(jwtCookie, jwt)
-        .path("/api")
-        .maxAge(24 * 60 * 60L)
-        .httpOnly(true)
-        .build();
+            .path("/api")
+            .maxAge(24 * 60 * 60L)
+            .httpOnly(true)
+            .build();
+  }
+
+  public ResponseCookie generateJwtCookieFromToken(String jwt) {
+    return ResponseCookie.from(jwtCookie, jwt)
+            .path("/api")
+            .maxAge(24 * 60 * 60L)
+            .httpOnly(true)
+            .build();
   }
 
   public ResponseCookie getCleanJwtCookie() {
@@ -53,6 +63,7 @@ public class JwtUtils {
   }
 
   public String getUserNameFromJwtToken(String token) {
+
     return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
   }
 
@@ -75,12 +86,23 @@ public class JwtUtils {
     return false;
   }
 
-  public String generateTokenFromUsername(String username) {
+  public String generateTokenFromUser(UserDetailsImpl userPrincipal){
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("id", userPrincipal.getId().toString());
+    claims.put("name", userPrincipal.getName());
+    claims.put("surname", userPrincipal.getSurname());
+    claims.put("passport_no", userPrincipal.getPassport_no());
+    claims.put("id_no", userPrincipal.getId_no());
+    claims.put("cost_center_id", userPrincipal.getCost_center_id().toString());
+
     return Jwts.builder()
-        .setSubject(username)
-        .setIssuedAt(new Date())
-        .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-        .signWith(SignatureAlgorithm.HS512, jwtSecret)
-        .compact();
+            .setClaims(claims)
+            .setSubject(userPrincipal.getUsername())
+            .setIssuedAt(new Date())
+            .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .compact();
+
   }
 }
+

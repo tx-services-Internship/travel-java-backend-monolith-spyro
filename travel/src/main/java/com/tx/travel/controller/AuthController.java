@@ -77,7 +77,16 @@ public class AuthController {
         .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
         .body(
             new UserInfoResponse(
-                userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    userDetails.getPassport_no(),
+                    userDetails.getId_no(),
+                    userDetails.getName(),
+                    userDetails.getSurname(),
+                    userDetails.getCost_center_id(),
+                    roles
+            ));
   }
 
   @PostMapping("/signup")
@@ -92,16 +101,22 @@ public class AuthController {
 
     // Create new user's account
     final User user =
-        new User(
-            signUpRequest.getUsername(),
-            signUpRequest.getEmail(),
-            encoder.encode(signUpRequest.getPassword()));
+            new User(
+                    signUpRequest.getUsername(),
+                    signUpRequest.getEmail(),
+                    encoder.encode(signUpRequest.getPassword()),
+                    signUpRequest.getName(),
+                    signUpRequest.getSurname(),
+                    signUpRequest.getPassport_no(),
+                    signUpRequest.getId_no(),
+                    signUpRequest.getCost_center_id()
+            );
 
-    final Set<String> strRoles = signUpRequest.getRole();
+    final String strRole = signUpRequest.getRole();
 
-    final Set<Role> roles = authService.addRoles(strRoles);
+    final Role role = authService.addRole(strRole); //mapiram String -> Role
 
-    user.setRoles(roles);
+    user.setRole(role);
 
     authService.addUser(user);
 

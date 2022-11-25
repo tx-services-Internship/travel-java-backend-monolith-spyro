@@ -5,6 +5,7 @@ import com.tx.travel.model.Role;
 import com.tx.travel.model.User;
 import com.tx.travel.repository.RoleRepository;
 import com.tx.travel.repository.UserRepository;
+import com.tx.travel.service.exception.EmailAlreadyExistsException;
 import com.tx.travel.service.exception.UsernameAlreadyExistsException;
 import java.util.HashSet;
 import java.util.Optional;
@@ -32,48 +33,35 @@ public class AuthService {
     }
     final Optional<User> userByEmail = userRepository.findByEmail(email);
     if (userByEmail.isPresent()) {
-      throw new UsernameAlreadyExistsException(email);
+      throw new EmailAlreadyExistsException(email);
     }
   }
 
-  public Set<Role> addRoles(final Set<String> strRoles) {
-    final Set<Role> roles = new HashSet<>();
-    if (strRoles == null) {
-      final Role userRole =
-          roleRepository
+  public Role addRole(final String strRole) {
+    if (strRole == null) {
+      return roleRepository
               .findByName(ERole.ROLE_EMPLOYEE)
               .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
-      roles.add(userRole);
-    } else {
-      strRoles.forEach(
-          role -> {
-            switch (role) {
-              case "admin":
-                final Role adminRole =
-                    roleRepository
-                        .findByName(ERole.ROLE_ADMIN)
-                        .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
-                roles.add(adminRole);
-
-                break;
-              case "mod":
-                final Role modRole =
-                    roleRepository
-                        .findByName(ERole.ROLE_OFFICE_MANAGER)
-                        .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
-                roles.add(modRole);
-
-                break;
-              default:
-                final Role userRole =
-                    roleRepository
-                        .findByName(ERole.ROLE_EMPLOYEE)
-                        .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
-                roles.add(userRole);
-            }
-          });
     }
-    return roles;
+    else {
+      switch (strRole) {
+        case "admin" -> {
+          return roleRepository
+                  .findByName(ERole.ROLE_ADMIN)
+                  .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
+        }
+        case "mod" -> {
+          return roleRepository
+                  .findByName(ERole.ROLE_OFFICE_MANAGER)
+                  .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
+        }
+        default -> {
+          return roleRepository
+                  .findByName(ERole.ROLE_EMPLOYEE)
+                  .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
+        }
+      }
+    }
   }
 
   public User addUser(final User user) {
