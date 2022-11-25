@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `expenses` (
 
 CREATE TABLE IF NOT EXISTS `travel_authorization_forms` (
     `id` VARCHAR(36) NOT NULL,
-    `business_trip_end_date` TIMESTAMP NOT NULL,
+    `trip_end_date` TIMESTAMP NOT NULL,
     `arrival_date` TIMESTAMP NOT NULL,
     `accommodation` VARCHAR(255) NOT NULL,
     `breakfast_number` INT UNSIGNED NOT NULL,
