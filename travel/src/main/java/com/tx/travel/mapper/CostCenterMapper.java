@@ -6,7 +6,7 @@ import com.tx.travel.payload.response.CostCenterResponse;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CostCenterMapperImplementation {
+public class CostCenterMapper {
 
   public CostCenter CostCenterRequestToCostCenter(final CostCenterRequest costCenterRequest) {
     return CostCenterRequestToCostCenter(costCenterRequest, null);

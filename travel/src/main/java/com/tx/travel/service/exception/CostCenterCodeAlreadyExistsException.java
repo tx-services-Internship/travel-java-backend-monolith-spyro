@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.CONFLICT, reason = "Already exists")
-public class CostCenterCodeAlreadyExists extends RuntimeException {
+public class CostCenterCodeAlreadyExistsException extends RuntimeException {
 
-  public CostCenterCodeAlreadyExists(final String code) {
+  public CostCenterCodeAlreadyExistsException(final String code) {
     super(MessageFormat.format("Error: Code {0} already exists!", code));
   }
 }

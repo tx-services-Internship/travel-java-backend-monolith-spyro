@@ -1,13 +1,12 @@
 package com.tx.travel.controller;
 
-import com.tx.travel.mapper.CostCenterMapperImplementation;
+import com.tx.travel.mapper.CostCenterMapper;
 import com.tx.travel.model.CostCenter;
 import com.tx.travel.payload.request.CostCenterRequest;
 import com.tx.travel.payload.response.CostCenterResponse;
 import com.tx.travel.service.CostCenterService;
-import com.tx.travel.service.CostCenterServiceImplementation;
-import com.tx.travel.service.exception.CostCenterCodeAlreadyExists;
-import com.tx.travel.service.exception.CostCenterNotPresent;
+import com.tx.travel.service.exception.CostCenterCodeAlreadyExistsException;
+import com.tx.travel.service.exception.CostCenterNotPresentException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -24,15 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/cost-centers")
+@RequestMapping("${apiPrefix}/cost-centers")
 public class CostCenterController {
 
   private final CostCenterService costCenterService;
-  private final CostCenterMapperImplementation costCenterMapper;
+  private final CostCenterMapper costCenterMapper;
 
   public CostCenterController(
-      final CostCenterServiceImplementation costCenterService,
-      final CostCenterMapperImplementation costCenterMapper) {
+      final CostCenterService costCenterService, final CostCenterMapper costCenterMapper) {
     this.costCenterService = costCenterService;
     this.costCenterMapper = costCenterMapper;
   }
@@ -53,12 +51,11 @@ public class CostCenterController {
   public ResponseEntity<CostCenterResponse> fetchCostCenterById(@PathVariable("id") Long id) {
 
     try {
-
       CostCenter fetchedCostCenter = costCenterService.fetchCostCenterById(id);
       return ResponseEntity.ok()
           .body(costCenterMapper.CostCenterToCostCenterResponse(fetchedCostCenter));
 
-    } catch (CostCenterNotPresent e) {
+    } catch (CostCenterNotPresentException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
   }
@@ -74,19 +71,17 @@ public class CostCenterController {
       return ResponseEntity.ok()
           .body(costCenterMapper.CostCenterToCostCenterResponse(savedCostCenter));
 
-    } catch (CostCenterCodeAlreadyExists e) {
+    } catch (CostCenterCodeAlreadyExistsException e) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
     }
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteCostCenterById(@PathVariable("id") Long id) {
+  public ResponseEntity deleteCostCenterById(@PathVariable("id") Long id) {
 
     try {
-
       costCenterService.deleteCostCenterById(id);
-
-    } catch (CostCenterNotPresent e) {
+    } catch (CostCenterNotPresentException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 
@@ -103,9 +98,9 @@ public class CostCenterController {
       return ResponseEntity.ok()
           .body(costCenterMapper.CostCenterToCostCenterResponse(updatedCostCenter));
 
-    } catch (CostCenterCodeAlreadyExists e) {
+    } catch (CostCenterCodeAlreadyExistsException e) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
-    } catch (CostCenterNotPresent e) {
+    } catch (CostCenterNotPresentException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
   }

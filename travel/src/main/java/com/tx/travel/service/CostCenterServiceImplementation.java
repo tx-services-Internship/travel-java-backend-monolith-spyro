@@ -2,8 +2,8 @@ package com.tx.travel.service;
 
 import com.tx.travel.model.CostCenter;
 import com.tx.travel.repository.CostCenterRepository;
-import com.tx.travel.service.exception.CostCenterCodeAlreadyExists;
-import com.tx.travel.service.exception.CostCenterNotPresent;
+import com.tx.travel.service.exception.CostCenterCodeAlreadyExistsException;
+import com.tx.travel.service.exception.CostCenterNotPresentException;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -25,38 +25,38 @@ public class CostCenterServiceImplementation implements CostCenterService {
   }
 
   @Override
-  public CostCenter fetchCostCenterById(Long id) throws CostCenterNotPresent {
+  public CostCenter fetchCostCenterById(Long id) throws CostCenterNotPresentException {
 
     Optional<CostCenter> fetchedCostCenter = costCenterRepository.findById(id);
-    if (fetchedCostCenter.isEmpty()) throw new CostCenterNotPresent(id);
+    if (fetchedCostCenter.isEmpty()) throw new CostCenterNotPresentException(id);
 
     return fetchedCostCenter.get();
   }
 
   @Override
   public CostCenter saveCostCenter(@Valid CostCenter costCenter)
-      throws CostCenterCodeAlreadyExists {
+      throws CostCenterCodeAlreadyExistsException {
 
     if (costCenterRepository.findByCode(costCenter.getCode()).isPresent())
-      throw new CostCenterCodeAlreadyExists(costCenter.getCode());
+      throw new CostCenterCodeAlreadyExistsException(costCenter.getCode());
 
     return costCenterRepository.save(costCenter);
   }
 
   @Override
-  public void deleteCostCenterById(Long id) throws CostCenterNotPresent {
-    if (costCenterRepository.findById(id).isEmpty()) throw new CostCenterNotPresent(id);
+  public void deleteCostCenterById(Long id) throws CostCenterNotPresentException {
+    if (costCenterRepository.findById(id).isEmpty()) throw new CostCenterNotPresentException(id);
     costCenterRepository.deleteById(id);
   }
 
   @Override
   public CostCenter updateCostCenterById(Long id, @Valid final CostCenter costCenter)
-      throws CostCenterNotPresent, CostCenterCodeAlreadyExists {
+      throws CostCenterNotPresentException, CostCenterCodeAlreadyExistsException {
 
-    if (costCenterRepository.findById(id).isEmpty()) throw new CostCenterNotPresent(id);
+    if (costCenterRepository.findById(id).isEmpty()) throw new CostCenterNotPresentException(id);
     else if (costCenterRepository.findByCode(costCenter.getCode()).isPresent()
         && !costCenterRepository.findById(id).get().getCode().equals(costCenter.getCode()))
-      throw new CostCenterCodeAlreadyExists(costCenter.getCode());
+      throw new CostCenterCodeAlreadyExistsException(costCenter.getCode());
 
     return costCenterRepository.save(costCenter);
   }
