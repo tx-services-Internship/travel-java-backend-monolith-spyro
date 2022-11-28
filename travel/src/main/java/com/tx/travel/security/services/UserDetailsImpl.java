@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +29,17 @@ public class UserDetailsImpl implements UserDetails {
 
   private Collection<? extends GrantedAuthority> authorities;
 
-  public UserDetailsImpl(Long id, String username, String email, String passport_no, String id_no, String name, String surname, Long cost_center_id, String password, Collection<? extends GrantedAuthority> authorities) {
+  public UserDetailsImpl(
+      Long id,
+      String username,
+      String email,
+      String passport_no,
+      String id_no,
+      String name,
+      String surname,
+      Long cost_center_id,
+      String password,
+      Collection<? extends GrantedAuthority> authorities) {
     this.id = id;
     this.username = username;
     this.email = email;
@@ -44,10 +53,20 @@ public class UserDetailsImpl implements UserDetails {
   }
 
   public static UserDetailsImpl build(User user) {
-    List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName().name()));
+    List<GrantedAuthority> authorities =
+        Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName().name()));
 
     return new UserDetailsImpl(
-            user.getId(), user.getUsername(), user.getEmail(), user.getPassport_no(), user.getId_no(), user.getName(), user.getSurname(), user.getCost_center_id(),user.getPassword(), authorities);
+        user.getId(),
+        user.getUsername(),
+        user.getEmail(),
+        user.getPassport_no(),
+        user.getId_no(),
+        user.getName(),
+        user.getSurname(),
+        user.getCost_center_id(),
+        user.getPassword(),
+        authorities);
   }
 
   public String getPassport_no() {
@@ -126,4 +145,3 @@ public class UserDetailsImpl implements UserDetails {
     return Objects.hash(id, username, email, password, authorities);
   }
 }
-

@@ -7,9 +7,7 @@ import com.tx.travel.repository.RoleRepository;
 import com.tx.travel.repository.UserRepository;
 import com.tx.travel.service.exception.EmailAlreadyExistsException;
 import com.tx.travel.service.exception.UsernameAlreadyExistsException;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -40,25 +38,24 @@ public class AuthService {
   public Role addRole(final String strRole) {
     if (strRole == null) {
       return roleRepository
-              .findByName(ERole.ROLE_EMPLOYEE)
-              .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
-    }
-    else {
+          .findByName(ERole.ROLE_EMPLOYEE)
+          .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
+    } else {
       switch (strRole) {
         case "admin" -> {
           return roleRepository
-                  .findByName(ERole.ROLE_ADMIN)
-                  .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
+              .findByName(ERole.ROLE_ADMIN)
+              .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
         }
         case "mod" -> {
           return roleRepository
-                  .findByName(ERole.ROLE_OFFICE_MANAGER)
-                  .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
+              .findByName(ERole.ROLE_OFFICE_MANAGER)
+              .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
         }
         default -> {
           return roleRepository
-                  .findByName(ERole.ROLE_EMPLOYEE)
-                  .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
+              .findByName(ERole.ROLE_EMPLOYEE)
+              .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
         }
       }
     }

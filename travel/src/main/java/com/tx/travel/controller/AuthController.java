@@ -12,7 +12,6 @@ import com.tx.travel.service.AuthService;
 import com.tx.travel.service.exception.EmailAlreadyExistsException;
 import com.tx.travel.service.exception.UsernameAlreadyExistsException;
 import java.util.List;
-import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -77,16 +76,15 @@ public class AuthController {
         .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
         .body(
             new UserInfoResponse(
-                    userDetails.getId(),
-                    userDetails.getUsername(),
-                    userDetails.getEmail(),
-                    userDetails.getPassport_no(),
-                    userDetails.getId_no(),
-                    userDetails.getName(),
-                    userDetails.getSurname(),
-                    userDetails.getCost_center_id(),
-                    roles
-            ));
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                userDetails.getPassport_no(),
+                userDetails.getId_no(),
+                userDetails.getName(),
+                userDetails.getSurname(),
+                userDetails.getCost_center_id(),
+                roles));
   }
 
   @PostMapping("/signup")
@@ -101,20 +99,19 @@ public class AuthController {
 
     // Create new user's account
     final User user =
-            new User(
-                    signUpRequest.getUsername(),
-                    signUpRequest.getEmail(),
-                    encoder.encode(signUpRequest.getPassword()),
-                    signUpRequest.getName(),
-                    signUpRequest.getSurname(),
-                    signUpRequest.getPassport_no(),
-                    signUpRequest.getId_no(),
-                    signUpRequest.getCost_center_id()
-            );
+        new User(
+            signUpRequest.getUsername(),
+            signUpRequest.getEmail(),
+            encoder.encode(signUpRequest.getPassword()),
+            signUpRequest.getName(),
+            signUpRequest.getSurname(),
+            signUpRequest.getPassport_no(),
+            signUpRequest.getId_no(),
+            signUpRequest.getCost_center_id());
 
     final String strRole = signUpRequest.getRole();
 
-    final Role role = authService.addRole(strRole); //mapiram String -> Role
+    final Role role = authService.addRole(strRole); // mapiram String -> Role
 
     user.setRole(role);
 

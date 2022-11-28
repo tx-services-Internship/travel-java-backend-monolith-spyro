@@ -15,7 +15,16 @@ public class UserInfoResponse {
 
   private List<String> roles;
 
-  public UserInfoResponse(Long id, String username, String email, String passport_no, String id_no, String name, String surname, Long cost_center_id, List<String> roles) {
+  public UserInfoResponse(
+      Long id,
+      String username,
+      String email,
+      String passport_no,
+      String id_no,
+      String name,
+      String surname,
+      Long cost_center_id,
+      List<String> roles) {
     this.id = id;
     this.username = username;
     this.email = email;

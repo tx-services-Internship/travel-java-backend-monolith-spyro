@@ -1,7 +1,5 @@
 package com.tx.travel.model;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -10,13 +8,13 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(
-        name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email"),
-                @UniqueConstraint(columnNames = "passport_no"),
-                @UniqueConstraint(columnNames = "id_no")
-        })
+    name = "users",
+    uniqueConstraints = {
+      @UniqueConstraint(columnNames = "username"),
+      @UniqueConstraint(columnNames = "email"),
+      @UniqueConstraint(columnNames = "passport_no"),
+      @UniqueConstraint(columnNames = "id_no")
+    })
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +29,7 @@ public class User {
   @Email
   private String email;
 
-  @NotBlank
-  private String password;
+  @NotBlank private String password;
 
   @NotBlank
   @Size(max = 20)
@@ -43,13 +40,14 @@ public class User {
   private String surname;
 
   @NotBlank
-  @Size(min=8, max=10)
+  @Size(min = 8, max = 10)
   private String passport_no;
+
   @NotBlank
-  @Size(min=8, max=9)
+  @Size(min = 8, max = 9)
   private String id_no;
-  @NotNull
-  private Long cost_center_id;
+
+  @NotNull private Long cost_center_id;
 
   @ManyToOne
   @JoinColumn(name = "role_id", referencedColumnName = "id")
@@ -57,7 +55,15 @@ public class User {
 
   public User() {}
 
-  public User(String username, String email, String password, String name, String surname, String passport_no, String id_no, Long cost_center_id) {
+  public User(
+      String username,
+      String email,
+      String password,
+      String name,
+      String surname,
+      String passport_no,
+      String id_no,
+      Long cost_center_id) {
     this.username = username;
     this.email = email;
     this.password = password;
@@ -147,5 +153,4 @@ public class User {
   public void setCost_center_id(Long cost_center_id) {
     this.cost_center_id = cost_center_id;
   }
-
 }

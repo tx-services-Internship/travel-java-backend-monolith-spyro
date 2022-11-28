@@ -44,18 +44,18 @@ public class JwtUtils {
   public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
     String jwt = generateTokenFromUser(userPrincipal);
     return ResponseCookie.from(jwtCookie, jwt)
-            .path("/api")
-            .maxAge(24 * 60 * 60L)
-            .httpOnly(true)
-            .build();
+        .path("/api")
+        .maxAge(24 * 60 * 60L)
+        .httpOnly(true)
+        .build();
   }
 
   public ResponseCookie generateJwtCookieFromToken(String jwt) {
     return ResponseCookie.from(jwtCookie, jwt)
-            .path("/api")
-            .maxAge(24 * 60 * 60L)
-            .httpOnly(true)
-            .build();
+        .path("/api")
+        .maxAge(24 * 60 * 60L)
+        .httpOnly(true)
+        .build();
   }
 
   public ResponseCookie getCleanJwtCookie() {
@@ -86,7 +86,7 @@ public class JwtUtils {
     return false;
   }
 
-  public String generateTokenFromUser(UserDetailsImpl userPrincipal){
+  public String generateTokenFromUser(UserDetailsImpl userPrincipal) {
     Map<String, Object> claims = new HashMap<>();
     claims.put("id", userPrincipal.getId().toString());
     claims.put("name", userPrincipal.getName());
@@ -96,13 +96,11 @@ public class JwtUtils {
     claims.put("cost_center_id", userPrincipal.getCost_center_id().toString());
 
     return Jwts.builder()
-            .setClaims(claims)
-            .setSubject(userPrincipal.getUsername())
-            .setIssuedAt(new Date())
-            .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-            .signWith(SignatureAlgorithm.HS512, jwtSecret)
-            .compact();
-
+        .setClaims(claims)
+        .setSubject(userPrincipal.getUsername())
+        .setIssuedAt(new Date())
+        .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+        .signWith(SignatureAlgorithm.HS512, jwtSecret)
+        .compact();
   }
 }
-
