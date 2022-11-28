@@ -1,13 +1,9 @@
 package com.tx.travel.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.tx.travel.mapper.DailyAllowanceMapper;
 import com.tx.travel.model.DailyAllowance;
 import com.tx.travel.payload.request.DailyAllowanceRequest;
 import com.tx.travel.payload.response.DailyAllowanceResponse;
-import com.tx.travel.payload.response.MessageResponse;
 import com.tx.travel.service.DailyAllowanceService;
 import com.tx.travel.service.exception.DailyAllowanceNotFoundException;
 import com.tx.travel.service.exception.RegionAlreadyExistsException;
@@ -17,10 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
-
-import static java.net.HttpURLConnection.HTTP_OK;
-import static org.mariadb.jdbc.client.DataType.JSON;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -89,14 +81,13 @@ public class DailyAllowanceController {
     }
 
     @PostMapping
-    public ResponseEntity<RestResponse> createDailyAllowance(@RequestBody DailyAllowanceResponse dailyAllowanceResponse) {
+    public ResponseEntity<DailyAllowanceResponse> createDailyAllowance(@RequestBody DailyAllowanceResponse dailyAllowanceResponse) {
         try{
 
             dailyAllowanceService.addDailyAllowance(dailyAllowanceMapper.mapDailyAllowanceResponseToDailyAllowance(dailyAllowanceResponse));
             DailyAllowance dailyAllowance = dailyAllowanceService.findByRegion(dailyAllowanceResponse.getRegion());
-            RestResponse dailyAllowanceRestResponse = new RestResponse(dailyAllowance, "Daily allowance successfully created!");
 
-            return ResponseEntity.ok(dailyAllowanceRestResponse);
+            return ResponseEntity.ok(dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceResponse(dailyAllowance));
         }catch(RegionAlreadyExistsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
