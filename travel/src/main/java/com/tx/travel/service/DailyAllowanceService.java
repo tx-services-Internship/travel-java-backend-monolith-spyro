@@ -44,8 +44,7 @@ public class DailyAllowanceService {
 
     public void addDailyAllowance(final DailyAllowance dailyAllowanceResponse) throws RegionAlreadyExistsException{
 
-        DailyAllowance da = dailyAllowanceResponse;
-        dailyAllowanceRepository.save(da);
+        dailyAllowanceRepository.save(dailyAllowanceResponse);
     }
 
     public DailyAllowance findById(Long id) {
@@ -73,10 +72,11 @@ public class DailyAllowanceService {
         Optional<DailyAllowance> dailyAllowance = dailyAllowanceRepository.findByRegion(newDailyAllowanceInfo.getRegion());
 
         if(dailyAllowance.isPresent()){
-            dailyAllowanceRepository.save(dailyAllowance.get());
+            dailyAllowanceRepository.save(newDailyAllowanceInfo);
         }else {
             throw new DailyAllowanceNotFoundException(newDailyAllowanceInfo.getRegion());
         }
-        return dailyAllowance.get();
+
+        return newDailyAllowanceInfo;
     }
 }

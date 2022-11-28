@@ -36,18 +36,17 @@ public class DailyAllowanceController {
         this.dailyAllowanceService = dailyAllowanceService;
     }
 
-    public class RestResponse<T> {
+    public class RestResponse{
 
-        private MessageResponse response = null;
-        private int httpResponse = HTTP_OK;
-        private T data;
+        private String response = null;
+        private Object data;
 
-        public RestResponse(T data, MessageResponse response) {
+        public RestResponse(Object data, String response) {
             this.data = data;
             this.response = response;
         }
 
-        public RestResponse(T data) {
+        public RestResponse(Object data) {
             this.data = data;
         }
 
@@ -90,13 +89,14 @@ public class DailyAllowanceController {
     }
 
     @PostMapping
-    public ResponseEntity<RestResponse<DailyAllowanceResponse>> createDailyAllowance(@RequestBody DailyAllowanceResponse dailyAllowanceResponse) {
+    public ResponseEntity<RestResponse> createDailyAllowance(@RequestBody DailyAllowanceResponse dailyAllowanceResponse) {
         try{
+
             dailyAllowanceService.addDailyAllowance(dailyAllowanceMapper.mapDailyAllowanceResponseToDailyAllowance(dailyAllowanceResponse));
-            ResponseEntity<DailyAllowanceResponse> dailyAllowance = getDailyAllowanceByRegion(dailyAllowanceResponse.getRegion());
-            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            RestResponse<DailyAllowanceResponse> dailyAllowanceRequest = new RestResponse<>(dailyAllowanceResponse, new MessageResponse("Daily allowance successfully created!"));
-            return ResponseEntity.ok(dailyAllowanceRequest);
+            DailyAllowance dailyAllowance = dailyAllowanceService.findByRegion(dailyAllowanceResponse.getRegion());
+            RestResponse dailyAllowanceRestResponse = new RestResponse(dailyAllowance, "Daily allowance successfully created!");
+
+            return ResponseEntity.ok(dailyAllowanceRestResponse);
         }catch(RegionAlreadyExistsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -106,7 +106,8 @@ public class DailyAllowanceController {
     public ResponseEntity<DailyAllowanceRequest> updateDailyAllowance(@RequestBody DailyAllowanceRequest newDailyAllowanceInfo, @PathVariable Long id){
 
         DailyAllowance daNew = dailyAllowanceMapper.mapDailyAllowanceRequestToDailyAllowanceUpdate(newDailyAllowanceInfo, id);
-        DailyAllowance updatedDailyAllowance = dailyAllowanceService.updateDailyAllowance(dailyAllowanceMapper.mapDailyAllowanceRequestToDailyAllowanceUpdate(newDailyAllowanceInfo, id));
+
+        DailyAllowance updatedDailyAllowance = dailyAllowanceService.updateDailyAllowance(daNew);
 
         return ResponseEntity.ok().body(dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceRequest(updatedDailyAllowance));
     }
