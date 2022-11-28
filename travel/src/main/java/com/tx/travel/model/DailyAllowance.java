@@ -31,8 +31,8 @@ public class DailyAllowance {
 
         @NotNull
         @Setter
-        @Getter //7, 6
-        private BigDecimal amount; //big decimal
+        @Getter
+        private BigDecimal amount;
 
         public DailyAllowance() {}
 

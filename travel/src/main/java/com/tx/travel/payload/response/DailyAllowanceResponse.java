@@ -1,5 +1,6 @@
 package com.tx.travel.payload.response;
 
+import com.tx.travel.payload.request.DailyAllowanceRequest;
 import lombok.Builder;
 import lombok.Data;
 

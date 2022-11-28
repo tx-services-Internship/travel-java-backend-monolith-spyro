@@ -13,13 +13,17 @@ public class DailyAllowanceRequest {
     private final BigDecimal amount;
 
     public DailyAllowanceRequest(String region, BigDecimal amount) {
+
         this.region = region;
         this.amount = amount;
+
     }
 
     public DailyAllowanceRequest() {
+
         this.region = null;
         this.amount = null;
+
     }
 
 }

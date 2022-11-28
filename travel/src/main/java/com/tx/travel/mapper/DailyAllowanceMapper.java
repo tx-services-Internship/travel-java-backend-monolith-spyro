@@ -22,7 +22,6 @@ public class DailyAllowanceMapper {
     public DailyAllowance mapDailyAllowanceRequestToDailyAllowance(DailyAllowanceRequest dailyAllowanceRequest){
 
         return DailyAllowance.builder()
-                //.id()
                 .amount(dailyAllowanceRequest.getAmount())
                 .region(dailyAllowanceRequest.getRegion())
                 .build();
@@ -54,7 +53,7 @@ public class DailyAllowanceMapper {
                 .build();
     }
 
-    public List<DailyAllowanceResponse> mapStudentListToStudentResponseList(List<DailyAllowance> dailyAllowances){
+    public List<DailyAllowanceResponse> mapDailyAllowanceListToDailyAllowanceResponseList(List<DailyAllowance> dailyAllowances){
 
         List<DailyAllowanceResponse> dailyAllowanceResponses = new CopyOnWriteArrayList<>();
 
@@ -64,4 +63,13 @@ public class DailyAllowanceMapper {
 
         return dailyAllowanceResponses;
     }
+
+    /*public DailyAllowanceRequest mapDailyAllowanceResponseToDailyAllowanceRequest(DailyAllowanceResponse dailyAllowanceResponse) {
+
+        return DailyAllowanceRequest.builder()
+                .id()
+                .amount(dailyAllowance.getAmount())
+                .region(dailyAllowance.getRegion())
+                .build();
+    }*/
 }

@@ -1,5 +1,10 @@
 package com.tx.travel.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.tx.travel.mapper.DailyAllowanceMapper;
+import com.tx.travel.model.DailyAllowance;
 import com.tx.travel.payload.request.DailyAllowanceRequest;
 import com.tx.travel.payload.response.DailyAllowanceResponse;
 import com.tx.travel.payload.response.MessageResponse;
@@ -12,25 +17,51 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
+
+import static java.net.HttpURLConnection.HTTP_OK;
+import static org.mariadb.jdbc.client.DataType.JSON;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/daily-allowances")
+@RequestMapping("/daily-allowances")
 public class DailyAllowanceController {
 
     final DailyAllowanceService dailyAllowanceService;
 
-    public DailyAllowanceController(final DailyAllowanceService dailyAllowanceService) {
+    private final DailyAllowanceMapper dailyAllowanceMapper;
+
+    public DailyAllowanceController(final DailyAllowanceService dailyAllowanceService, final DailyAllowanceMapper dailyAllowanceMapper) {
+        this.dailyAllowanceMapper = dailyAllowanceMapper;
         this.dailyAllowanceService = dailyAllowanceService;
     }
 
-    @GetMapping
+    public class RestResponse<T> {
+
+        private MessageResponse response = null;
+        private int httpResponse = HTTP_OK;
+        private T data;
+
+        public RestResponse(T data, MessageResponse response) {
+            this.data = data;
+            this.response = response;
+        }
+
+        public RestResponse(T data) {
+            this.data = data;
+        }
+
+    }
+
+        @GetMapping
     //@PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_OFFICE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<DailyAllowanceResponse>> getDailyAllowances() {
 
-        List<DailyAllowanceResponse> dailyAllowances = dailyAllowanceService.getAllDailyAllowances();
+        List<DailyAllowance> dailyAllowances = dailyAllowanceService.getAllDailyAllowances();
 
-        return ResponseEntity.ok().body(dailyAllowances);
+        List<DailyAllowanceResponse> dailyAllowanceResponses = dailyAllowanceMapper.mapDailyAllowanceListToDailyAllowanceResponseList(dailyAllowances);
+
+        return ResponseEntity.ok().body(dailyAllowanceResponses);
     }
 
     @GetMapping("/{id}")
@@ -39,7 +70,7 @@ public class DailyAllowanceController {
         DailyAllowanceResponse dailyAllowance;
 
         try {
-            dailyAllowance = dailyAllowanceService.findById(id);
+            dailyAllowance = dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceResponse(dailyAllowanceService.findById(id));
         } catch (DailyAllowanceNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
@@ -53,20 +84,19 @@ public class DailyAllowanceController {
 
         DailyAllowanceResponse dailyAllowance;
 
-        try{
-            dailyAllowance = dailyAllowanceService.findByRegion(region);
-        }catch (DailyAllowanceNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
+        dailyAllowance = dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceResponse(dailyAllowanceService.findByRegion(region));
+
         return ResponseEntity.ok().body(dailyAllowance);
     }
 
     @PostMapping
-    public ResponseEntity<?> createDailyAllowance(@RequestBody DailyAllowanceResponse dailyAllowanceResponse) {
+    public ResponseEntity<RestResponse<DailyAllowanceResponse>> createDailyAllowance(@RequestBody DailyAllowanceResponse dailyAllowanceResponse) {
         try{
-            dailyAllowanceService.addDailyAllowance(dailyAllowanceResponse);
-
-            return ResponseEntity.ok(new MessageResponse("Daily allowance successfully created!"));
+            dailyAllowanceService.addDailyAllowance(dailyAllowanceMapper.mapDailyAllowanceResponseToDailyAllowance(dailyAllowanceResponse));
+            ResponseEntity<DailyAllowanceResponse> dailyAllowance = getDailyAllowanceByRegion(dailyAllowanceResponse.getRegion());
+            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            RestResponse<DailyAllowanceResponse> dailyAllowanceRequest = new RestResponse<>(dailyAllowanceResponse, new MessageResponse("Daily allowance successfully created!"));
+            return ResponseEntity.ok(dailyAllowanceRequest);
         }catch(RegionAlreadyExistsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -75,11 +105,10 @@ public class DailyAllowanceController {
     @PutMapping("/{id}")
     public ResponseEntity<DailyAllowanceRequest> updateDailyAllowance(@RequestBody DailyAllowanceRequest newDailyAllowanceInfo, @PathVariable Long id){
 
-        DailyAllowanceRequest updatedDailyAllowance;
+        DailyAllowance daNew = dailyAllowanceMapper.mapDailyAllowanceRequestToDailyAllowanceUpdate(newDailyAllowanceInfo, id);
+        DailyAllowance updatedDailyAllowance = dailyAllowanceService.updateDailyAllowance(dailyAllowanceMapper.mapDailyAllowanceRequestToDailyAllowanceUpdate(newDailyAllowanceInfo, id));
 
-        updatedDailyAllowance = dailyAllowanceService.updateDailyAllowance(newDailyAllowanceInfo, id);
-
-        return ResponseEntity.ok().body(updatedDailyAllowance);
+        return ResponseEntity.ok().body(dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceRequest(updatedDailyAllowance));
     }
 
     @DeleteMapping("/{id}")

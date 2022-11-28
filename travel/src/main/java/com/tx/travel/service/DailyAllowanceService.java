@@ -17,47 +17,43 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service
 public class DailyAllowanceService {
 
-    private final DailyAllowanceMapper dailyAllowanceMapper;
     private final DailyAllowanceRepository dailyAllowanceRepository;
 
-    public DailyAllowanceService(final DailyAllowanceRepository dailyAllowanceRepository, final DailyAllowanceMapper dailyAllowanceMapper) {
-        this.dailyAllowanceMapper = dailyAllowanceMapper;
+    public DailyAllowanceService(final DailyAllowanceRepository dailyAllowanceRepository) {
         this.dailyAllowanceRepository = dailyAllowanceRepository;
     }
 
-    public List<DailyAllowanceResponse> getAllDailyAllowances() {
-        List<DailyAllowanceResponse> dailyAllowanceResponses = new CopyOnWriteArrayList<>();
+    public List<DailyAllowance> getAllDailyAllowances() {
+        List<DailyAllowance> dailyAllowanceResponses = new CopyOnWriteArrayList<>();
 
-        for (DailyAllowance da: dailyAllowanceRepository.findAll()) {
-            dailyAllowanceResponses.add(dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceResponse(da));
-        }
+        dailyAllowanceResponses.addAll(dailyAllowanceRepository.findAll());
 
         return dailyAllowanceResponses;
     }
 
-    public DailyAllowanceResponse findByRegion(final String region) {
+    public DailyAllowance findByRegion(final String region) {
 
         Optional<DailyAllowance> dailyAllowance = dailyAllowanceRepository.findByRegion(region);
 
         if(dailyAllowance.isPresent()){
-            return dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceResponse(dailyAllowance.get());
+            return dailyAllowance.get();
         }else {
             throw new DailyAllowanceNotFoundException(region);
         }
     }
 
-    public void addDailyAllowance(final DailyAllowanceResponse dailyAllowanceResponse) throws RegionAlreadyExistsException{
+    public void addDailyAllowance(final DailyAllowance dailyAllowanceResponse) throws RegionAlreadyExistsException{
 
-        DailyAllowance da = dailyAllowanceMapper.mapDailyAllowanceResponseToDailyAllowance(dailyAllowanceResponse);
+        DailyAllowance da = dailyAllowanceResponse;
         dailyAllowanceRepository.save(da);
     }
 
-    public DailyAllowanceResponse findById(Long id) {
+    public DailyAllowance findById(Long id) {
 
         Optional<DailyAllowance> dailyAllowance = dailyAllowanceRepository.findById(id);
 
         if(dailyAllowance.isPresent()){
-            return dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceResponse(dailyAllowance.get());
+            return dailyAllowance.get();
         }else {
             throw new DailyAllowanceNotFoundException(id);
         }
@@ -72,17 +68,15 @@ public class DailyAllowanceService {
         }
     }
 
-    public DailyAllowanceRequest updateDailyAllowance(final DailyAllowanceRequest newDailyAllowanceInfo, final Long id) {
-
-        DailyAllowance daNew = dailyAllowanceMapper.mapDailyAllowanceRequestToDailyAllowanceUpdate(newDailyAllowanceInfo, id);
+    public DailyAllowance updateDailyAllowance(final DailyAllowance newDailyAllowanceInfo) {
 
         Optional<DailyAllowance> dailyAllowance = dailyAllowanceRepository.findByRegion(newDailyAllowanceInfo.getRegion());
 
         if(dailyAllowance.isPresent()){
-            dailyAllowanceRepository.save(daNew);
+            dailyAllowanceRepository.save(dailyAllowance.get());
         }else {
             throw new DailyAllowanceNotFoundException(newDailyAllowanceInfo.getRegion());
         }
-        return dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceRequest(daNew);
+        return dailyAllowance.get();
     }
 }
