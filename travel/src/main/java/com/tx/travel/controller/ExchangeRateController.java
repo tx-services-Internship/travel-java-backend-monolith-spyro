@@ -1,50 +1,106 @@
 package com.tx.travel.controller;
 
+import com.tx.travel.mapper.ExchangeRateMapper;
+import com.tx.travel.model.ExchangeRate;
+import com.tx.travel.payload.request.ExchangeRatePostRequest;
+import com.tx.travel.payload.request.ExchangeRatePutRequest;
 import com.tx.travel.payload.response.ExchangeRateResponse;
 import com.tx.travel.service.ExchangeRateService;
+import com.tx.travel.service.exception.ExchangeRateAlreadyDefined;
+import com.tx.travel.service.exception.ExchangeRateNotFound;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import javax.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("api/exchange-rates")
+@RequestMapping("${apiPrefix}/exchange-rates")
 public class ExchangeRateController {
 
-    private ExchangeRateService exchangeRateService;
+  private final ExchangeRateService exchangeRateService;
+  private final ExchangeRateMapper exchangeRateMapper;
 
-    public ExchangeRateController(ExchangeRateService exchangeRateService){
-        this.exchangeRateService = exchangeRateService;
+  public ExchangeRateController(
+      ExchangeRateService exchangeRateService, ExchangeRateMapper exchangeRateMapper) {
+    this.exchangeRateService = exchangeRateService;
+    this.exchangeRateMapper = exchangeRateMapper;
+  }
+
+  @GetMapping
+  public ResponseEntity<List<ExchangeRateResponse>> getAllExchangeRates() {
+
+    List<ExchangeRateResponse> exchangeRateResponses = new ArrayList<>();
+
+    for (ExchangeRate er : exchangeRateService.getAllExchangeRates()) {
+      exchangeRateResponses.add(exchangeRateMapper.mapExchangeRateToExchangeRateResponse(er));
     }
 
-    @GetMapping
-    public ResponseEntity<List<ExchangeRateResponse>> getAllExchangeRates(){
+    return ResponseEntity.ok().body(exchangeRateResponses);
+  }
 
-        return null;
+  @GetMapping("/{id}")
+  public ResponseEntity<ExchangeRateResponse> getExchangeRateById(@PathVariable Long id) {
+
+    ExchangeRate exchangeRateById;
+
+    try {
+      exchangeRateById = exchangeRateService.getExchangeRateById(id);
+    } catch (NoSuchElementException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ExchangeRateResponse> getExchangeRateById(@PathVariable Long id){
+    return ResponseEntity.ok()
+        .body(exchangeRateMapper.mapExchangeRateToExchangeRateResponse(exchangeRateById));
+  }
 
-        return null;
+  @PostMapping
+  public ResponseEntity<?> createExchangeRate(
+      @Valid @RequestBody ExchangeRatePostRequest exchangeRatePostRequest) {
+
+    try {
+      exchangeRateService.validateByCode(exchangeRatePostRequest.getCode());
+    } catch (ExchangeRateAlreadyDefined e) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createExchangeRate(){
+    exchangeRateService.createExchangeRate(
+        exchangeRateMapper.mapExchangeRatePostRequestToExchangeRate(exchangeRatePostRequest));
 
-        return null;
+    return ResponseEntity.ok().body("Successfully created exchanged rate!");
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<?> updateExchangeRate(
+      @Valid @RequestBody ExchangeRatePutRequest exchangeRatePutRequest, @PathVariable Long id) {
+
+    try {
+      ExchangeRate newExchangeRate =
+          exchangeRateMapper.mapExchangeRatePutRequestToExchangeRate(exchangeRatePutRequest, id);
+
+      ExchangeRateResponse updatedExchangeRateResponse =
+          exchangeRateMapper.mapExchangeRateToExchangeRateResponse(
+              exchangeRateService.updateExchangeRate(newExchangeRate));
+
+      return ResponseEntity.ok().body(updatedExchangeRateResponse);
+    } catch (ExchangeRateNotFound e) {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteExchangeRate(@PathVariable Long id) {
+
+    try {
+      exchangeRateService.deleteExchangeRate(id);
+    } catch (ExchangeRateNotFound e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateExchangeRate(@PathVariable Long id){
-
-        return null;
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteExchangeRate(@PathVariable Long id){
-
-        return null;
-    }
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Exchange rate successfully deleted.");
+  }
 }
