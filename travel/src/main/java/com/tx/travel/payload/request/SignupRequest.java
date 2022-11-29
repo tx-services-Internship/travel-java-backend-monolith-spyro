@@ -1,5 +1,6 @@
 package com.tx.travel.payload.request;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,11 +24,13 @@ public class SignupRequest {
 
   @NotBlank
   @Size(min = 8, max = 10)
-  private String passport_no;
+  @Column(name="passport_no")
+  private String passportNo;
 
   @NotBlank
   @Size(min = 8, max = 9)
-  private String id_no;
+  @Column(name = "id_no")
+  private String idNo;
 
   @NotBlank
   @Size(max = 20)
@@ -37,22 +40,32 @@ public class SignupRequest {
   @Size(max = 20)
   private String surname;
 
-  @NotNull private Long cost_center_id;
+  @NotNull
+  @Column(name = "cost_center_id")
+  private Long costCenterId;
 
-  public String getPassport_no() {
-    return passport_no;
+  public String getPassportNo() {
+    return passportNo;
   }
 
-  public void setPassport_no(String passport_no) {
-    this.passport_no = passport_no;
+  public void setPassportNo(String passportNo) {
+    this.passportNo = passportNo;
   }
 
-  public String getId_no() {
-    return id_no;
+  public String getIdNo() {
+    return idNo;
   }
 
-  public void setId_no(String id_no) {
-    this.id_no = id_no;
+  public void setIdNo(String idNo) {
+    this.idNo = idNo;
+  }
+
+  public Long getCostCenterId() {
+    return costCenterId;
+  }
+
+  public void setCostCenterId(Long costCenterId) {
+    this.costCenterId = costCenterId;
   }
 
   public String getName() {
@@ -69,14 +82,6 @@ public class SignupRequest {
 
   public void setSurname(String surname) {
     this.surname = surname;
-  }
-
-  public Long getCost_center_id() {
-    return cost_center_id;
-  }
-
-  public void setCost_center_id(Long cost_center_id) {
-    this.cost_center_id = cost_center_id;
   }
 
   public String getUsername() {

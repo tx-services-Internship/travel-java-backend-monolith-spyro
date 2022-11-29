@@ -40,14 +40,17 @@ public class User {
   private String surname;
 
   @NotBlank
+  @Column(name="passport_no")
   @Size(min = 8, max = 10)
-  private String passport_no;
+  private String passportNo;
 
   @NotBlank
+  @Column(name="id_no")
   @Size(min = 8, max = 9)
-  private String id_no;
+  private String idNo;
 
-  @NotNull private Long cost_center_id;
+  @Column(name="cost_center_id")
+  @NotNull private Long costCenterId;
 
   @ManyToOne
   @JoinColumn(name = "role_id", referencedColumnName = "id")
@@ -61,17 +64,17 @@ public class User {
       String password,
       String name,
       String surname,
-      String passport_no,
-      String id_no,
-      Long cost_center_id) {
+      String passportNo,
+      String idNo,
+      Long costCenterId) {
     this.username = username;
     this.email = email;
     this.password = password;
     this.name = name;
     this.surname = surname;
-    this.passport_no = passport_no;
-    this.id_no = id_no;
-    this.cost_center_id = cost_center_id;
+    this.passportNo = passportNo;
+    this.idNo = idNo;
+    this.costCenterId = costCenterId;
   }
 
   public Long getId() {
@@ -130,27 +133,27 @@ public class User {
     this.surname = surname;
   }
 
-  public String getPassport_no() {
-    return passport_no;
+  public String getPassportNo() {
+    return passportNo;
   }
 
-  public void setPassport_no(String passport_no) {
-    this.passport_no = passport_no;
+  public void setPassportNo(String passportNo) {
+    this.passportNo = passportNo;
   }
 
-  public String getId_no() {
-    return id_no;
+  public String getIdNo() {
+    return idNo;
   }
 
-  public void setId_no(String id_no) {
-    this.id_no = id_no;
+  public void setIdNo(String idNo) {
+    this.idNo = idNo;
   }
 
-  public Long getCost_center_id() {
-    return cost_center_id;
+  public Long getCostCenterId() {
+    return costCenterId;
   }
 
-  public void setCost_center_id(Long cost_center_id) {
-    this.cost_center_id = cost_center_id;
+  public void setCostCenterId(Long costCenterId) {
+    this.costCenterId = costCenterId;
   }
 }

@@ -19,11 +19,11 @@ public class UserDetailsImpl implements UserDetails {
 
   private String email;
 
-  private String passport_no;
-  private String id_no;
+  private String passportNo;
+  private String idNo;
   private String name;
   private String surname;
-  private Long cost_center_id;
+  private Long costCenterId;
 
   @JsonIgnore private String password;
 
@@ -33,21 +33,21 @@ public class UserDetailsImpl implements UserDetails {
       Long id,
       String username,
       String email,
-      String passport_no,
-      String id_no,
+      String passportNo,
+      String idNo,
       String name,
       String surname,
-      Long cost_center_id,
+      Long costCenterId,
       String password,
       Collection<? extends GrantedAuthority> authorities) {
     this.id = id;
     this.username = username;
     this.email = email;
-    this.passport_no = passport_no;
-    this.id_no = id_no;
+    this.passportNo = passportNo;
+    this.idNo = idNo;
     this.name = name;
     this.surname = surname;
-    this.cost_center_id = cost_center_id;
+    this.costCenterId = costCenterId;
     this.password = password;
     this.authorities = authorities;
   }
@@ -60,21 +60,25 @@ public class UserDetailsImpl implements UserDetails {
         user.getId(),
         user.getUsername(),
         user.getEmail(),
-        user.getPassport_no(),
-        user.getId_no(),
+        user.getPassportNo(),
+        user.getIdNo(),
         user.getName(),
         user.getSurname(),
-        user.getCost_center_id(),
+        user.getCostCenterId(),
         user.getPassword(),
         authorities);
   }
 
-  public String getPassport_no() {
-    return passport_no;
+  public String getPassportNo() {
+    return passportNo;
   }
 
-  public String getId_no() {
-    return id_no;
+  public String getIdNo() {
+    return idNo;
+  }
+
+  public Long getCostCenterId() {
+    return costCenterId;
   }
 
   public String getName() {
@@ -83,10 +87,6 @@ public class UserDetailsImpl implements UserDetails {
 
   public String getSurname() {
     return surname;
-  }
-
-  public Long getCost_center_id() {
-    return cost_center_id;
   }
 
   @Override

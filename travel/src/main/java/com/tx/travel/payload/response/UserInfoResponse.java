@@ -7,11 +7,11 @@ public class UserInfoResponse {
   private String username;
   private String email;
 
-  private String passport_no;
-  private String id_no;
+  private String passportNo;
+  private String idNo;
   private String name;
   private String surname;
-  private Long cost_center_id;
+  private Long costCenterId;
 
   private List<String> roles;
 
@@ -19,37 +19,45 @@ public class UserInfoResponse {
       Long id,
       String username,
       String email,
-      String passport_no,
-      String id_no,
+      String passportNo,
+      String idNo,
       String name,
       String surname,
-      Long cost_center_id,
+      Long costCenterId,
       List<String> roles) {
     this.id = id;
     this.username = username;
     this.email = email;
-    this.passport_no = passport_no;
-    this.id_no = id_no;
+    this.passportNo = passportNo;
+    this.idNo = idNo;
     this.name = name;
     this.surname = surname;
-    this.cost_center_id = cost_center_id;
+    this.costCenterId = costCenterId;
     this.roles = roles;
   }
 
-  public String getPassport_no() {
-    return passport_no;
+  public String getPassportNo() {
+    return passportNo;
   }
 
-  public void setPassport_no(String passport_no) {
-    this.passport_no = passport_no;
+  public void setPassportNo(String passportNo) {
+    this.passportNo = passportNo;
   }
 
-  public String getId_no() {
-    return id_no;
+  public String getIdNo() {
+    return idNo;
   }
 
-  public void setId_no(String id_no) {
-    this.id_no = id_no;
+  public void setIdNo(String idNo) {
+    this.idNo = idNo;
+  }
+
+  public Long getCostCenterId() {
+    return costCenterId;
+  }
+
+  public void setCostCenterId(Long costCenterId) {
+    this.costCenterId = costCenterId;
   }
 
   public String getName() {
@@ -66,14 +74,6 @@ public class UserInfoResponse {
 
   public void setSurname(String surname) {
     this.surname = surname;
-  }
-
-  public Long getCost_center_id() {
-    return cost_center_id;
-  }
-
-  public void setCost_center_id(Long cost_center_id) {
-    this.cost_center_id = cost_center_id;
   }
 
   public Long getId() {

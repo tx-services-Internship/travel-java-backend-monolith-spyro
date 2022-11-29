@@ -79,11 +79,11 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                userDetails.getPassport_no(),
-                userDetails.getId_no(),
+                userDetails.getPassportNo(),
+                userDetails.getIdNo(),
                 userDetails.getName(),
                 userDetails.getSurname(),
-                userDetails.getCost_center_id(),
+                userDetails.getCostCenterId(),
                 roles));
   }
 
@@ -105,13 +105,13 @@ public class AuthController {
             encoder.encode(signUpRequest.getPassword()),
             signUpRequest.getName(),
             signUpRequest.getSurname(),
-            signUpRequest.getPassport_no(),
-            signUpRequest.getId_no(),
-            signUpRequest.getCost_center_id());
+            signUpRequest.getPassportNo(),
+            signUpRequest.getIdNo(),
+            signUpRequest.getCostCenterId());
 
     final String strRole = signUpRequest.getRole();
 
-    final Role role = authService.addRole(strRole); // mapiram String -> Role
+    final Role role = authService.addRole(strRole);
 
     user.setRole(role);
 
