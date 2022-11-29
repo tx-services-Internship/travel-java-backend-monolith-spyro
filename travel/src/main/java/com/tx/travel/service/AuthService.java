@@ -24,7 +24,7 @@ public class AuthService {
   }
 
   public void findByUsernameOrEmail(@NotNull final String username, @NotNull final String email)
-      throws UsernameAlreadyExistsException {
+      throws UsernameAlreadyExistsException,EmailAlreadyExistsException {
     final Optional<User> userByUsername = userRepository.findByUsername(username);
     if (userByUsername.isPresent()) {
       throw new UsernameAlreadyExistsException(username);
@@ -35,7 +35,7 @@ public class AuthService {
     }
   }
 
-  public Role addRole(final String strRole) {
+  public Role addRoleAdmin(final String strRole) {
     if (strRole == null) {
       return roleRepository
           .findByName(ERole.ROLE_EMPLOYEE)
@@ -59,6 +59,12 @@ public class AuthService {
         }
       }
     }
+  }
+
+  public Role addRole(final ERole role) {
+      return roleRepository
+              .findByName(role)
+              .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
   }
 
   public User addUser(final User user) {

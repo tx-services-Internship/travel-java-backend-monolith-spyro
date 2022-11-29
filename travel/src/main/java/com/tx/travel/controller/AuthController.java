@@ -1,5 +1,6 @@
 package com.tx.travel.controller;
 
+import com.tx.travel.commons.oauth.security.ERole;
 import com.tx.travel.model.Role;
 import com.tx.travel.model.User;
 import com.tx.travel.payload.request.LoginRequest;
@@ -109,9 +110,7 @@ public class AuthController {
             signUpRequest.getIdNo(),
             signUpRequest.getCostCenterId());
 
-    final String strRole = signUpRequest.getRole();
-
-    final Role role = authService.addRole(strRole);
+    final Role role = authService.addRole(ERole.ROLE_EMPLOYEE);
 
     user.setRole(role);
 
