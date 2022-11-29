@@ -46,6 +46,7 @@ public class JwtUtils {
     return ResponseCookie.from(jwtCookie, jwt)
         .path("/api")
         .maxAge(24 * 60 * 60L)
+        .secure(true)
         .httpOnly(true)
         .build();
   }
@@ -91,9 +92,9 @@ public class JwtUtils {
     claims.put("id", userPrincipal.getId().toString());
     claims.put("name", userPrincipal.getName());
     claims.put("surname", userPrincipal.getSurname());
-    claims.put("passport_no", userPrincipal.getPassport_no());
-    claims.put("id_no", userPrincipal.getId_no());
-    claims.put("cost_center_id", userPrincipal.getCost_center_id().toString());
+    claims.put("passportNo", userPrincipal.getPassportNo());
+    claims.put("idNo", userPrincipal.getIdNo());
+    claims.put("costCenterId", userPrincipal.getCostCenterId().toString());
 
     return Jwts.builder()
         .setClaims(claims)
