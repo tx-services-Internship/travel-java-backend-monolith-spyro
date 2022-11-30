@@ -1,6 +1,6 @@
 package com.tx.travel.controller;
 
-import com.tx.travel.payload.response.CostCentreResponse;
+import com.tx.travel.payload.response.CostCenterResponse;
 import com.tx.travel.payload.response.DailyAllowanceResponse;
 import com.tx.travel.payload.response.ExchangeRateResponse;
 import java.util.List;
@@ -26,7 +26,7 @@ public class TravelController {
   @GetMapping("/cost-centres")
   @PreAuthorize(
       "hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_OFFICE_MANAGER') or hasRole('ROLE_ADMIN')")
-  public ResponseEntity<List<CostCentreResponse>> getCostCentres() {
+  public ResponseEntity<List<CostCenterResponse>> getCostCentres() {
     return null;
   }
 
