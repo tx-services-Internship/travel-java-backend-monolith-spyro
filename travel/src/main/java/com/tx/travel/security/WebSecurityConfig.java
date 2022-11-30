@@ -78,7 +78,7 @@ public class WebSecurityConfig {
             "/swagger-ui/**",
             "/swagger-ui.html")
         .permitAll()
-        .antMatchers("/api/test/**", "/daily-allowances/**")
+        .antMatchers("/api/test/**")
         .permitAll()
         .anyRequest()
         .authenticated();

@@ -1,10 +1,8 @@
 package com.tx.travel.payload.response;
 
-import com.tx.travel.payload.request.DailyAllowanceRequest;
+import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Data;
-
-import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -25,5 +23,4 @@ public class DailyAllowanceResponse {
     this.amount = null;
     this.id = null;
   }
-
 }

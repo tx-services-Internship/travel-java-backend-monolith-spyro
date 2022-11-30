@@ -1,29 +1,25 @@
 package com.tx.travel.payload.request;
 
+import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Data;
-
-import java.math.BigDecimal;
 
 @Data
 @Builder
 public class DailyAllowanceRequest {
 
-    private final String region;
-    private final BigDecimal amount;
+  private final String region;
+  private final BigDecimal amount;
 
-    public DailyAllowanceRequest(String region, BigDecimal amount) {
+  public DailyAllowanceRequest(String region, BigDecimal amount) {
 
-        this.region = region;
-        this.amount = amount;
+    this.region = region;
+    this.amount = amount;
+  }
 
-    }
+  public DailyAllowanceRequest() {
 
-    public DailyAllowanceRequest() {
-
-        this.region = null;
-        this.amount = null;
-
-    }
-
+    this.region = null;
+    this.amount = null;
+  }
 }
