@@ -9,8 +9,6 @@ public interface ExchangeRateService {
 
   ExchangeRate getExchangeRateById(Long id);
 
- // void validateByCode(String code);
-
   void createExchangeRate(ExchangeRate exchangeRatePostRequest);
 
   void deleteExchangeRate(Long id);
