@@ -61,7 +61,7 @@ public class CostCenterController {
   }
 
   @PostMapping()
-  public ResponseEntity<CostCenterResponse> saveCostCenter(
+  public ResponseEntity<CostCenterResponse> createCostCenter(
       @Valid @RequestBody CostCenterRequest costCenterRequest) {
 
     try {
