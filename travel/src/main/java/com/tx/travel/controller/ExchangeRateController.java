@@ -6,8 +6,10 @@ import com.tx.travel.payload.request.ExchangeRatePostRequest;
 import com.tx.travel.payload.request.ExchangeRatePutRequest;
 import com.tx.travel.payload.response.ExchangeRateResponse;
 import com.tx.travel.service.ExchangeRateService;
-import com.tx.travel.service.exception.ExchangeRateAlreadyDefined;
-import com.tx.travel.service.exception.ExchangeRateNotFound;
+import com.tx.travel.service.exception.ExchangeRateAlreadyDefinedException;
+import com.tx.travel.service.exception.ExchangeRateAmountInRsdNotValidException;
+import com.tx.travel.service.exception.ExchangeRateCodeNotValidException;
+import com.tx.travel.service.exception.ExchangeRateNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -63,13 +65,13 @@ public class ExchangeRateController {
       @Valid @RequestBody ExchangeRatePostRequest exchangeRatePostRequest) {
 
     try {
-      exchangeRateService.validateByCode(exchangeRatePostRequest.getCode());
-    } catch (ExchangeRateAlreadyDefined e) {
+      exchangeRateService.createExchangeRate(
+          exchangeRateMapper.mapExchangeRatePostRequestToExchangeRate(exchangeRatePostRequest));
+    } catch (ExchangeRateAlreadyDefinedException
+        | ExchangeRateCodeNotValidException
+        | ExchangeRateAmountInRsdNotValidException e) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
     }
-
-    exchangeRateService.createExchangeRate(
-        exchangeRateMapper.mapExchangeRatePostRequestToExchangeRate(exchangeRatePostRequest));
 
     return ResponseEntity.ok().body("Successfully created exchanged rate!");
   }
@@ -87,7 +89,7 @@ public class ExchangeRateController {
               exchangeRateService.updateExchangeRate(newExchangeRate));
 
       return ResponseEntity.ok().body(updatedExchangeRateResponse);
-    } catch (ExchangeRateNotFound e) {
+    } catch (ExchangeRateNotFoundException e) {
       return ResponseEntity.notFound().build();
     }
   }
@@ -97,7 +99,7 @@ public class ExchangeRateController {
 
     try {
       exchangeRateService.deleteExchangeRate(id);
-    } catch (ExchangeRateNotFound e) {
+    } catch (ExchangeRateNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 
