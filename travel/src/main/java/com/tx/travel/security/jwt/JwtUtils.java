@@ -26,6 +26,12 @@ public class JwtUtils {
   @Value("${travel.app.jwtSecret}")
   private String jwtSecret;
 
+  @Value("${travel.app.maxAge}")
+  private Long maxAge;
+
+  @Value("${travel.app.cookiePath}")
+  private String cookiePath;
+
   @Value("${travel.app.jwtExpirationMs}")
   private int jwtExpirationMs;
 
@@ -44,8 +50,8 @@ public class JwtUtils {
   public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
     String jwt = generateTokenFromUser(userPrincipal);
     return ResponseCookie.from(jwtCookie, jwt)
-        .path("/api")
-        .maxAge(24 * 60 * 60L)
+        .path(cookiePath)
+        .maxAge(maxAge)
         .secure(true)
         .httpOnly(true)
         .build();
@@ -53,14 +59,14 @@ public class JwtUtils {
 
   public ResponseCookie generateJwtCookieFromToken(String jwt) {
     return ResponseCookie.from(jwtCookie, jwt)
-        .path("/api")
-        .maxAge(24 * 60 * 60L)
+        .path(cookiePath)
+        .maxAge(maxAge)
         .httpOnly(true)
         .build();
   }
 
   public ResponseCookie getCleanJwtCookie() {
-    return ResponseCookie.from(jwtCookie, null).path("/api").build();
+    return ResponseCookie.from(jwtCookie, null).path(cookiePath).build();
   }
 
   public String getUserNameFromJwtToken(String token) {
