@@ -1,6 +1,6 @@
 package com.tx.travel.payload.response;
 
-import java.util.UUID;
+import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,9 +8,7 @@ import lombok.Data;
 @Builder
 public class ExchangeRateResponse {
 
-  private final UUID id;
-  private final String updatedAt;
-  private final String name;
+  private final Long id;
   private final String code;
-  private final String amountInRsd;
+  private final BigDecimal amountInRsd;
 }
