@@ -1,7 +1,11 @@
 package com.tx.travel.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.tx.travel.AbstractUnitTestBase;
 import com.tx.travel.model.ExchangeRate;
@@ -61,7 +65,9 @@ public class ExchangeRateServiceLocalImplTest extends AbstractUnitTestBase {
 
   @Test
   @DisplayName(
-      "given exchange rate" + "when getting exchange rate by id" + "then return exchange rate")
+      "given existing exchange rate"
+          + "when getting exchange rate by id"
+          + "then return exchange rate")
   public void getExchangeRateById_success() {
 
     long id = 1L;
@@ -78,7 +84,7 @@ public class ExchangeRateServiceLocalImplTest extends AbstractUnitTestBase {
 
   @Test
   @DisplayName(
-      "given exchange rate"
+      "given non-existing exchange rate"
           + "when getting exchange rate by id"
           + "then return ExchangeRateNotFoundException")
   public void getExchangeRateById_notFound() {
@@ -177,7 +183,12 @@ public class ExchangeRateServiceLocalImplTest extends AbstractUnitTestBase {
   public void deleteExchangeRate_success() {
 
     long id = 1L;
+    String code = "EUR";
+    BigDecimal amountInRsd = new BigDecimal("117.32");
+    ExchangeRate exchangeRate =
+        ExchangeRate.builder().id(id).code(code).amountInRsd(amountInRsd).build();
 
+    when(exchangeRateRepository.findById(id)).thenReturn(Optional.of(exchangeRate));
     doNothing().when(exchangeRateRepository).deleteById(id);
 
     exchangeRateServiceLocal.deleteExchangeRate(id);
@@ -194,7 +205,7 @@ public class ExchangeRateServiceLocalImplTest extends AbstractUnitTestBase {
 
     long id = 1L;
 
-    doThrow(new ExchangeRateNotFoundException(id)).when(exchangeRateRepository).deleteById(id);
+    when(exchangeRateRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(
         ExchangeRateNotFoundException.class, () -> exchangeRateServiceLocal.deleteExchangeRate(id));

@@ -9,9 +9,7 @@ import com.tx.travel.service.exception.ExchangeRateAmountInRsdNotValidException;
 import com.tx.travel.service.exception.ExchangeRateCodeNotValidException;
 import com.tx.travel.service.exception.ExchangeRateNotFoundException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,22 +29,22 @@ public class ExchangeRateServiceLocalImpl implements ExchangeRateService {
   }
 
   @Override
-  public ExchangeRate getExchangeRateById(Long id) throws NoSuchElementException {
+  public ExchangeRate getExchangeRateById(Long id) throws ExchangeRateNotFoundException {
 
     Optional<ExchangeRate> exchangeRateById = exchangeRateRepository.findById(id);
 
     if (exchangeRateById.isPresent()) return exchangeRateById.get();
-    else throw new NoSuchElementException();
+    else throw new ExchangeRateNotFoundException(id);
   }
 
   @Override
-  public void createExchangeRate(ExchangeRate exchangeRatePost) throws ExchangeRateAlreadyDefinedException {
+  public void createExchangeRate(ExchangeRate exchangeRatePost)
+      throws ExchangeRateAlreadyDefinedException {
     validateByCode(exchangeRatePost.getCode());
     exchangeRateRepository.save(exchangeRatePost);
   }
 
-  private void validateByCode(String code)
-      throws ExchangeRateAlreadyDefinedException {
+  private void validateByCode(String code) throws ExchangeRateAlreadyDefinedException {
     validateCodeContent(code);
     Optional<ExchangeRate> exchangeRateByCode = exchangeRateRepository.findByCode(code);
     if (exchangeRateByCode.isPresent()) throw new ExchangeRateAlreadyDefinedException(code);
@@ -59,9 +57,11 @@ public class ExchangeRateServiceLocalImpl implements ExchangeRateService {
   @Override
   public void deleteExchangeRate(Long id) throws ExchangeRateNotFoundException {
 
-    try {
+    Optional<ExchangeRate> exchangeRate = exchangeRateRepository.findById(id);
+
+    if (exchangeRate.isPresent()) {
       exchangeRateRepository.deleteById(id);
-    } catch (EmptyResultDataAccessException e) {
+    } else {
       throw new ExchangeRateNotFoundException(id);
     }
   }

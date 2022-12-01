@@ -12,7 +12,6 @@ import com.tx.travel.service.exception.ExchangeRateCodeNotValidException;
 import com.tx.travel.service.exception.ExchangeRateNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +51,7 @@ public class ExchangeRateController {
 
     try {
       exchangeRateById = exchangeRateService.getExchangeRateById(id);
-    } catch (NoSuchElementException e) {
+    } catch (ExchangeRateNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 
