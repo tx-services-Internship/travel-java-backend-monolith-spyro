@@ -1,8 +1,14 @@
 package com.tx.travel.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.doNothing;
 
 import com.tx.travel.AbstractUnitTestBase;
 import com.tx.travel.model.DailyAllowance;
@@ -23,15 +29,14 @@ import org.mockito.Mock;
 public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
   @Mock DailyAllowanceRepository dailyAllowanceRepository;
 
-  @InjectMocks // creates an instance of the class and injects the mocks that are created with the
-  // @Mock
-  DailyAllowanceService sut; // subject under texting
+  @InjectMocks
+  DailyAllowanceService sut;
 
   @Captor ArgumentCaptor<DailyAllowance> dailyAllowanceArgumentCaptor;
 
   @DisplayName(
-      "given daily allowance"
-          + "when daily allowance is updated"
+      "given valid daily allowance"
+          + "when daily allowance is requested to be updated"
           + "then daily allowance is updated successfully")
   @Test
   public void updateDailyAllowance_success() {
@@ -47,14 +52,14 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
     when(dailyAllowanceRepository.save(dailyAllowance)).thenReturn(dailyAllowance);
 
     final DailyAllowance result = sut.updateDailyAllowance(dailyAllowance);
-    // assertNotNull(result);
+    assertNotNull(result);
     verify(dailyAllowanceRepository, times(1)).save(dailyAllowanceArgumentCaptor.capture());
     DailyAllowance result1 = dailyAllowanceArgumentCaptor.getValue();
     assertThat(result.getAmount()).isEqualTo(dailyAllowance.getAmount());
   }
 
   @DisplayName(
-      "given daily allowance"
+      "given existing daily allowance"
           + "when daily allowance is searched by id"
           + "then daily allowance is returned successfully")
   @Test
@@ -74,7 +79,7 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
   }
 
   @DisplayName(
-      "given daily allowance"
+      "given a non-existing daily allowance"
           + "when daily allowance is searched by id"
           + "then throw DailyAllowanceNotFoundException")
   @Test
@@ -90,9 +95,9 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
   }
 
   @DisplayName(
-      "given daily allowance"
-          + "when daily allowance is added"
-          + "then daily allowance is added successfully")
+      "given a new daily allowance"
+          + "when daily allowance is requested to be created"
+          + "then daily allowance is is created successfully")
   @Test
   public void addDailyAllowance_success() {
     final Long id = 1L;
@@ -104,12 +109,15 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
 
     when(dailyAllowanceRepository.save(dailyAllowance)).thenReturn(dailyAllowance);
 
-    assertDoesNotThrow(() -> sut.addDailyAllowance(dailyAllowance));
+    //assertDoesNotThrow(() -> sut.addDailyAllowance(dailyAllowance));
+    verify(dailyAllowanceRepository, times(1)).save(dailyAllowanceArgumentCaptor.capture());
+    DailyAllowance result1 = dailyAllowanceArgumentCaptor.getValue();
+    assertThat(result1.getAmount()).isEqualTo(dailyAllowance.getAmount());
   }
 
   @DisplayName(
-      "given daily allowance"
-          + "when daily allowance is added"
+      "given existing daily allowance"
+          + "when daily allowance is requested to be created"
           + "then throw DailyAllowanceAlreadyExists")
   @Test
   public void addDailyAllowance_DailyAllowanceAlreadyExists() {
@@ -125,7 +133,7 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
   }
 
   @DisplayName(
-      "given daily allowance"
+      "given existing daily allowance"
           + "when daily allowance is searched by region"
           + "then daily allowance is returned successfully")
   @Test
@@ -146,7 +154,7 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
   }
 
   @DisplayName(
-      "given daily allowance"
+      "given non-existing daily allowance"
           + "when daily allowance is searched by region"
           + "then throw DailyAllowanceNotFoundException")
   @Test
@@ -166,7 +174,7 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
 
   @DisplayName(
       "given list of all daily allowance"
-          + "when getting list of all daily allowances"
+          + "when all daily allowances are requested to be found"
           + "then return list of all daily allowances successfully")
   @Test
   public void getAllDailyAllowances_success() {
@@ -192,8 +200,8 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
   }
 
   @DisplayName(
-      "given daily allowance"
-          + "when daily allowance is deleted"
+      "given existing daily allowance"
+          + "when daily allowance is requested to be deleted"
           + "then daily allowance is deleted successfully")
   @Test
   public void deleteDailyAllowance_success() {
@@ -209,12 +217,11 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
     sut.deleteDailyAllowance(id);
 
     verify(dailyAllowanceRepository, times(1)).deleteById(id);
-    // assertDoesNotThrow(() -> sut.deleteDailyAllowance(id));
   }
 
   @DisplayName(
-      "given daily allowance"
-          + "when daily allowance is updated"
+      "given non-existing daily allowance"
+          + "when daily allowance is requested to be updated"
           + "then throw DailyAllowanceNotFoundException")
   @Test
   public void updateDailyAllowance_DailyAllowanceNotFoundException() {
@@ -235,8 +242,8 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
   }
 
   @DisplayName(
-      "given daily allowance"
-          + "when daily allowance is updated"
+      "given a null region"
+          + "when daily allowance requested to be updated"
           + "then throw DailyAllowanceNotFoundException")
   @Test
   public void updateDailyAllowance_RegionIsNull() {

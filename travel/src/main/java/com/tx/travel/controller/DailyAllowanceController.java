@@ -29,24 +29,7 @@ public class DailyAllowanceController {
     this.dailyAllowanceService = dailyAllowanceService;
   }
 
-  public class RestResponse {
-
-    private String response = null;
-    private Object data;
-
-    public RestResponse(Object data, String response) {
-      this.data = data;
-      this.response = response;
-    }
-
-    public RestResponse(Object data) {
-      this.data = data;
-    }
-  }
-
   @GetMapping
-  // @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_OFFICE_MANAGER') or
-  // hasRole('ROLE_ADMIN')")
   public ResponseEntity<List<DailyAllowanceResponse>> getDailyAllowances() {
 
     List<DailyAllowance> dailyAllowances = dailyAllowanceService.getAllDailyAllowances();
@@ -58,7 +41,7 @@ public class DailyAllowanceController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getDailyAllowanceByID(@PathVariable Long id) {
+  public ResponseEntity<DailyAllowanceResponse> getDailyAllowanceByID(@PathVariable Long id) {
 
     DailyAllowanceResponse dailyAllowance;
 
@@ -102,7 +85,7 @@ public class DailyAllowanceController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<DailyAllowanceRequest> updateDailyAllowance(
+  public ResponseEntity<DailyAllowanceResponse> updateDailyAllowance(
       @RequestBody DailyAllowanceRequest newDailyAllowanceInfo, @PathVariable Long id) {
 
     DailyAllowance daNew =
@@ -112,11 +95,11 @@ public class DailyAllowanceController {
     DailyAllowance updatedDailyAllowance = dailyAllowanceService.updateDailyAllowance(daNew);
 
     return ResponseEntity.ok()
-        .body(dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceRequest(updatedDailyAllowance));
+        .body(dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceResponse(updatedDailyAllowance));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity.HeadersBuilder<?> deleteDailyAllowance(@PathVariable Long id) {
+  public ResponseEntity deleteDailyAllowance(@PathVariable Long id) {
 
     try {
       dailyAllowanceService.deleteDailyAllowance(id);
@@ -124,6 +107,6 @@ public class DailyAllowanceController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
     }
 
-    return ResponseEntity.noContent();
+    return ResponseEntity.noContent().build();
   }
 }
