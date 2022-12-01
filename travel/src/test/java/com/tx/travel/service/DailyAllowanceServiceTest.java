@@ -1,19 +1,19 @@
 package com.tx.travel.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.tx.travel.AbstractUnitTestBase;
 import com.tx.travel.model.DailyAllowance;
 import com.tx.travel.repository.DailyAllowanceRepository;
 import com.tx.travel.service.exception.DailyAllowanceNotFoundException;
+import com.tx.travel.service.exception.RegionAlreadyExistsException;
 import com.tx.travel.service.exception.RegionNullPointerException;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -29,8 +29,7 @@ import org.mockito.Mock;
 public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
   @Mock DailyAllowanceRepository dailyAllowanceRepository;
 
-  @InjectMocks
-  DailyAllowanceService sut;
+  @InjectMocks DailyAllowanceService sut;
 
   @Captor ArgumentCaptor<DailyAllowance> dailyAllowanceArgumentCaptor;
 
@@ -109,7 +108,8 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
 
     when(dailyAllowanceRepository.save(dailyAllowance)).thenReturn(dailyAllowance);
 
-    //assertDoesNotThrow(() -> sut.addDailyAllowance(dailyAllowance));
+    sut.addDailyAllowance(dailyAllowance);
+
     verify(dailyAllowanceRepository, times(1)).save(dailyAllowanceArgumentCaptor.capture());
     DailyAllowance result1 = dailyAllowanceArgumentCaptor.getValue();
     assertThat(result1.getAmount()).isEqualTo(dailyAllowance.getAmount());
@@ -120,16 +120,16 @@ public class DailyAllowanceServiceTest extends AbstractUnitTestBase {
           + "when daily allowance is requested to be created"
           + "then throw DailyAllowanceAlreadyExists")
   @Test
-  public void addDailyAllowance_DailyAllowanceAlreadyExists() {
+  public void addDailyAllowance_RegionAlreadyExists() {
     final Long id = 1L;
     final BigDecimal testAmount = new BigDecimal(100);
     final String testRegion = "TestRegionAlreadyExists";
+    final RegionAlreadyExistsException e = new RegionAlreadyExistsException(testRegion);
 
-    when(dailyAllowanceRepository.findByRegion(testRegion))
-        .thenReturn(Optional.of(DailyAllowance.builder().id(id).build()));
+    when(dailyAllowanceRepository.findByRegion(testRegion)).thenThrow(e);
 
-    final DailyAllowance result = sut.findByRegion(testRegion);
-    assertNotNull(result);
+    assertThrows(RegionAlreadyExistsException.class, () -> sut.findByRegion(testRegion));
+    ;
   }
 
   @DisplayName(

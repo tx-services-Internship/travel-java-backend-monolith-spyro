@@ -7,6 +7,7 @@ import com.tx.travel.payload.response.DailyAllowanceResponse;
 import com.tx.travel.service.DailyAllowanceService;
 import com.tx.travel.service.exception.DailyAllowanceNotFoundException;
 import com.tx.travel.service.exception.RegionAlreadyExistsException;
+import com.tx.travel.service.exception.RegionNullPointerException;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,10 @@ public class DailyAllowanceController {
       final DailyAllowanceMapper dailyAllowanceMapper) {
     this.dailyAllowanceMapper = dailyAllowanceMapper;
     this.dailyAllowanceService = dailyAllowanceService;
+  }
+
+  private void validateRegion(String region) {
+    if (region == null) throw new RegionNullPointerException();
   }
 
   @GetMapping
@@ -70,8 +75,14 @@ public class DailyAllowanceController {
   @PostMapping
   public ResponseEntity<DailyAllowanceResponse> createDailyAllowance(
       @RequestBody DailyAllowanceResponse dailyAllowanceResponse) {
-    try {
 
+    try {
+      validateRegion(dailyAllowanceResponse.getRegion());
+    } catch (RegionNullPointerException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    try {
       dailyAllowanceService.addDailyAllowance(
           dailyAllowanceMapper.mapDailyAllowanceResponseToDailyAllowance(dailyAllowanceResponse));
       DailyAllowance dailyAllowance =
@@ -88,6 +99,12 @@ public class DailyAllowanceController {
   public ResponseEntity<DailyAllowanceResponse> updateDailyAllowance(
       @RequestBody DailyAllowanceRequest newDailyAllowanceInfo, @PathVariable Long id) {
 
+    try {
+      validateRegion(newDailyAllowanceInfo.getRegion());
+    } catch (RegionNullPointerException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
     DailyAllowance daNew =
         dailyAllowanceMapper.mapDailyAllowanceRequestToDailyAllowanceUpdate(
             newDailyAllowanceInfo, id);
@@ -95,7 +112,8 @@ public class DailyAllowanceController {
     DailyAllowance updatedDailyAllowance = dailyAllowanceService.updateDailyAllowance(daNew);
 
     return ResponseEntity.ok()
-        .body(dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceResponse(updatedDailyAllowance));
+        .body(
+            dailyAllowanceMapper.mapDailyAllowanceToDailyAllowanceResponse(updatedDailyAllowance));
   }
 
   @DeleteMapping("/{id}")
