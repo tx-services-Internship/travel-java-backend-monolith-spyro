@@ -33,6 +33,7 @@
         <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
         <springdoc-openapi-ui.version>1.6.4</springdoc-openapi-ui.version>
         <mockito-core.version>4.9.0</mockito-core.version>
+        <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
     </properties>
 
     <dependencyManagement>
@@ -48,6 +49,11 @@
                 <version>${version.spring-boot}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
