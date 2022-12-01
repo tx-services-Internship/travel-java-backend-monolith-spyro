@@ -29,9 +29,9 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
     @InjectMocks
     AuthService sut;
 
-    @DisplayName("given auth service" +
-                 "when auth service is asked to find user" +
-                 "then auth service found user")
+    @DisplayName("given existing username" +
+                 "when user was searched" +
+                 "then throw UsernameAlreadyExistsException")
     @Test
     public void findByUsernameOrEmail_thrownUserNameAlreadyExistedException(){
 
@@ -43,8 +43,11 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
         assertThrows(UsernameAlreadyExistsException.class,()->{ sut.findByUsernameOrEmail(usr,"email"); });
     }
 
+    @DisplayName("given existing email" +
+            "when user was searched" +
+            "then throw EmailAlreadyExistsException")
     @Test
-    public void findByUsernameOrEmail_thrownEmailAlreadyExistedException_success(){
+    public void findByUsernameOrEmail_thrownEmailAlreadyExistedException(){
 
         final String email = "usr1@email.com";
 
@@ -54,8 +57,11 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
         assertThrows(EmailAlreadyExistsException.class,()->{ sut.findByUsernameOrEmail("",email); });
     }
 
+    @DisplayName("given string admin" +
+            "when role was searched" +
+            "then return admin role")
     @Test
-    public void addRoleAdmin_retAdmin_success(){
+    public void addRoleAdmin_success(){
 
         final String role = "admin";
 
@@ -66,46 +72,54 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
                 .thenReturn(Optional.of(rola));
 
         final Role result = sut.addRoleAdmin(role);
-
         assertEquals(result, rola);
     }
 
+    @DisplayName("given string mod" +
+            "when role was searched" +
+            "then return office manager role")
     @Test
-    public void addRole_retOM_success(){
+    public void addRoleOM_success(){
 
-        final String role = "mod";
+        final String role_string = "mod";
 
-        final Role rola = new Role(ERole.ROLE_OFFICE_MANAGER);
-        rola.setId(2);
+        final Role role= new Role(ERole.ROLE_OFFICE_MANAGER);
+        role.setId(2);
 
         when(roleRepository.findByName(ERole.ROLE_OFFICE_MANAGER))
-                .thenReturn(Optional.of(rola));
+                .thenReturn(Optional.of(role));
 
-        final Role result = sut.addRoleAdmin(role);
+        final Role result = sut.addRoleAdmin(role_string);
 
-        assertEquals(result, rola);
+        assertEquals(result, role);
     }
 
+    @DisplayName("given any string different from admin and mod" +
+            "when role was searched" +
+            "then return employee role")
     @Test
-    public void addRole_retEmpl_success(){
+    public void addRoleEmpl_success(){
 
-        final String role = "afa"; //nesto sto nije admin/mod
+        final String role_string = "test_role"; //nesto sto nije admin/mod
 
-        final Role rola = new Role(ERole.ROLE_EMPLOYEE);
-        rola.setId(2);
+        final Role role = new Role(ERole.ROLE_EMPLOYEE);
+        role.setId(2);
 
         when(roleRepository.findByName(ERole.ROLE_EMPLOYEE))
-                .thenReturn(Optional.of(rola));
+                .thenReturn(Optional.of(role));
 
-        final Role result = sut.addRoleAdmin(role);
+        final Role result = sut.addRoleAdmin(role_string);
 
-        assertEquals(result, rola);
+        assertEquals(result, role);
     }
 
+    @DisplayName("given null string" +
+            "when role was searched" +
+            "then return employee role")
     @Test
-    public void addRole_retEmplNull_success(){
+    public void addRole_null(){
 
-        final String role = null;//nesto sto nije admin/mod
+        final String role = null;
 
         final Role rola = new Role(ERole.ROLE_EMPLOYEE);
         rola.setId(2);
@@ -118,8 +132,11 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
         assertEquals(result, rola);
     }
 
+    @DisplayName("given non-existing role" +
+            "when role was searched" +
+            "then throw RuntimeException")
     @Test
-    public void addRole_retEmplException_success(){
+    public void addRoleEmplException_success(){
 
         final String role = null;
 

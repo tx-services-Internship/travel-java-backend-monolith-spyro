@@ -22,12 +22,10 @@ public class SignupRequest {
 
   @NotBlank
   @Size(min = 8, max = 10)
-  @Column(name="passport_no")
   private String passportNo;
 
   @NotBlank
   @Size(min = 8, max = 9)
-  @Column(name = "id_no")
   private String idNo;
 
   @NotBlank
@@ -39,7 +37,6 @@ public class SignupRequest {
   private String surname;
 
   @NotNull
-  @Column(name = "cost_center_id")
   private Long costCenterId;
 
   public String getPassportNo() {

@@ -110,7 +110,7 @@ public class AuthController {
             signUpRequest.getIdNo(),
             signUpRequest.getCostCenterId());
 
-    final Role role = authService.addRole(ERole.ROLE_EMPLOYEE);
+    final Role role = authService.getRole(ERole.ROLE_EMPLOYEE);
 
     user.setRole(role);
 

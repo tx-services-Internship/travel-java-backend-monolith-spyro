@@ -61,7 +61,7 @@ public class AuthService {
     }
   }
 
-  public Role addRole(final ERole role) {
+  public Role getRole(ERole role) {
       return roleRepository
               .findByName(role)
               .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
