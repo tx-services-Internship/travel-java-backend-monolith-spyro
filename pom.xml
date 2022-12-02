@@ -32,6 +32,11 @@
         <spotless-maven-plugin.version>2.27.2</spotless-maven-plugin.version>
         <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
         <springdoc-openapi-ui.version>1.6.4</springdoc-openapi-ui.version>
+        <mockito-core.version>4.9.0</mockito-core.version>
+        <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
+        <assertj-core.version>3.22.0</assertj-core.version>
+        <mockito-junit-jupiter.version>4.5.1</mockito-junit-jupiter.version>
+        <junit-jupiter-api.version>5.8.2</junit-jupiter-api.version>
     </properties>
 
     <dependencyManagement>
@@ -49,9 +54,9 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jjwt.version}</version>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -72,19 +77,35 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-junit-jupiter</artifactId>
-                <version>4.5.1</version>
+                <version>${mockito-junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>5.8.2</version>
+                <version>${junit-jupiter-api.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${springdoc-openapi-ui.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito-core.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

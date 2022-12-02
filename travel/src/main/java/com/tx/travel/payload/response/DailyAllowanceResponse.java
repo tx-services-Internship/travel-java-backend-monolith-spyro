@@ -1,6 +1,6 @@
 package com.tx.travel.payload.response;
 
-import java.util.UUID;
+import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,7 +8,19 @@ import lombok.Data;
 @Builder
 public class DailyAllowanceResponse {
 
-  private final UUID id;
+  private final Long id;
   private final String region;
-  private final long amount;
+  private final BigDecimal amount;
+
+  public DailyAllowanceResponse(final Long id, final String region, final BigDecimal amount) {
+    this.region = region;
+    this.amount = amount;
+    this.id = id;
+  }
+
+  public DailyAllowanceResponse() {
+    this.region = null;
+    this.amount = null;
+    this.id = null;
+  }
 }
