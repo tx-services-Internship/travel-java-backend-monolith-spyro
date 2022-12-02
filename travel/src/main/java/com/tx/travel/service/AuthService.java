@@ -6,6 +6,7 @@ import com.tx.travel.model.User;
 import com.tx.travel.repository.RoleRepository;
 import com.tx.travel.repository.UserRepository;
 import com.tx.travel.service.exception.EmailAlreadyExistsException;
+import com.tx.travel.service.exception.RoleNotFoundException;
 import com.tx.travel.service.exception.UsernameAlreadyExistsException;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
@@ -35,36 +36,10 @@ public class AuthService {
     }
   }
 
-  public Role addRoleAdmin(final String strRole) {
-    if (strRole == null) {
-      return roleRepository
-          .findByName(ERole.ROLE_EMPLOYEE)
-          .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
-    } else {
-      switch (strRole) {
-        case "admin" -> {
-          return roleRepository
-              .findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
-        }
-        case "mod" -> {
-          return roleRepository
-              .findByName(ERole.ROLE_OFFICE_MANAGER)
-              .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
-        }
-        default -> {
-          return roleRepository
-              .findByName(ERole.ROLE_EMPLOYEE)
-              .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
-        }
-      }
-    }
-  }
-
   public Role getRole(ERole role) {
       return roleRepository
               .findByName(role)
-              .orElseThrow(() -> new RuntimeException(ERROR_ROLE_NOT_FOUND));
+              .orElseThrow(() -> new RoleNotFoundException(role));
   }
 
   public User addUser(final User user) {
