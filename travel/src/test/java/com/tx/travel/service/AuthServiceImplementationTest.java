@@ -26,9 +26,10 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
   @InjectMocks AuthService sut;
 
   @DisplayName(
-      "given existing username"
-          + " when user was searched"
-          + " then throw UsernameAlreadyExistsException")
+      "given existing username" +
+      " when user was searched" +
+      " then throw UsernameAlreadyExistsException"
+  )
   @Test
   public void findByUsernameOrEmail_thrownUserNameAlreadyExistedException() {
 
@@ -48,12 +49,14 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
                     1L)));
 
     assertThrows(
-        UsernameAlreadyExistsException.class,
-        () -> sut.findByUsernameOrEmail(usr, "email"));
+        UsernameAlreadyExistsException.class, () -> sut.findByUsernameOrEmail(usr, "email"));
   }
 
   @DisplayName(
-      "given existing email" + " when user was searched" + " then throw EmailAlreadyExistsException")
+      "given existing email" +
+      " when user was searched" +
+      " then throw EmailAlreadyExistsException"
+  )
   @Test
   public void findByUsernameOrEmail_thrownEmailAlreadyExistedException() {
 
@@ -72,12 +75,14 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
                     "123123123",
                     1L)));
 
-    assertThrows(
-        EmailAlreadyExistsException.class,
-        () -> sut.findByUsernameOrEmail("", email));
+    assertThrows(EmailAlreadyExistsException.class, () -> sut.findByUsernameOrEmail("", email));
   }
 
-  @DisplayName("given string admin" + " when role was searched" + " then return admin role")
+  @DisplayName(
+          "given string admin" +
+          " when role was searched" +
+          " then return admin role"
+  )
   @Test
   public void addRoleAdmin_success() {
 
@@ -90,42 +95,50 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
     assertEquals(result, role);
   }
 
-  @DisplayName("given string mod" + " when role was searched" + " then return office manager role")
+  @DisplayName(
+          "given string mod" +
+          " when role was searched" +
+          " then return office manager role"
+  )
   @Test
   public void addRoleOM_success() {
 
-      final Role role = new Role(ERole.ROLE_OFFICE_MANAGER);
-      role.setId(2);
+    final Role role = new Role(ERole.ROLE_OFFICE_MANAGER);
+    role.setId(2);
 
-      when(roleRepository.findByName(ERole.ROLE_OFFICE_MANAGER)).thenReturn(Optional.of(role));
+    when(roleRepository.findByName(ERole.ROLE_OFFICE_MANAGER)).thenReturn(Optional.of(role));
 
-      final Role result = sut.getRole(ERole.ROLE_OFFICE_MANAGER);
-      assertEquals(result, role);
+    final Role result = sut.getRole(ERole.ROLE_OFFICE_MANAGER);
+    assertEquals(result, role);
   }
 
   @DisplayName(
-      "given any string different from admin and mod"
-          + " when role was searched"
-          + " then return employee role")
+          "given any string different from admin and mod" +
+          " when role was searched" +
+          " then return employee role"
+  )
   @Test
   public void addRoleEmpl_success() {
 
-      final Role role = new Role(ERole.ROLE_EMPLOYEE);
-      role.setId(2);
+    final Role role = new Role(ERole.ROLE_EMPLOYEE);
+    role.setId(2);
 
-      when(roleRepository.findByName(ERole.ROLE_EMPLOYEE)).thenReturn(Optional.of(role));
+    when(roleRepository.findByName(ERole.ROLE_EMPLOYEE)).thenReturn(Optional.of(role));
 
-      final Role result = sut.getRole(ERole.ROLE_EMPLOYEE);
-      assertEquals(result, role);
+    final Role result = sut.getRole(ERole.ROLE_EMPLOYEE);
+    assertEquals(result, role);
   }
 
-  @DisplayName("given null string" + " when role was searched" + " then throws RoleNotFoundException")
+  @DisplayName(
+          "given null string" +
+          " when role was searched" +
+          " then throws RoleNotFoundException"
+  )
   @Test
   public void addRole_null() {
 
-      when(roleRepository.findByName(null)).thenReturn(Optional.empty());
+    when(roleRepository.findByName(null)).thenReturn(Optional.empty());
 
-      assertThrows(RoleNotFoundException.class, ()-> sut.getRole(null));
+    assertThrows(RoleNotFoundException.class, () -> sut.getRole(null));
   }
-
 }
