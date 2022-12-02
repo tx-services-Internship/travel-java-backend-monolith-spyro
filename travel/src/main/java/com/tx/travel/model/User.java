@@ -1,19 +1,9 @@
 package com.tx.travel.model;
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -21,7 +11,9 @@ import javax.validation.constraints.Size;
     name = "users",
     uniqueConstraints = {
       @UniqueConstraint(columnNames = "username"),
-      @UniqueConstraint(columnNames = "email")
+      @UniqueConstraint(columnNames = "email"),
+      @UniqueConstraint(columnNames = "passport_no"),
+      @UniqueConstraint(columnNames = "id_no")
     })
 public class User {
   @Id
@@ -29,7 +21,7 @@ public class User {
   private Long id;
 
   @NotBlank
-  @Size(max = 20)
+  @Size(min = 3, max = 20)
   private String username;
 
   @NotBlank
@@ -37,23 +29,53 @@ public class User {
   @Email
   private String email;
 
-  @NotBlank
-  @Size(max = 120)
-  private String password;
+  @NotBlank private String password;
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-      name = "user_roles",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "role_id"))
-  private Set<Role> roles = new HashSet<>();
+  @NotBlank
+  @Size(max = 20)
+  private String name;
+
+  @NotBlank
+  @Size(max = 20)
+  private String surname;
+
+  @NotBlank
+  @Column(name = "passport_no")
+  @Size(min = 8, max = 10)
+  private String passportNo;
+
+  @NotBlank
+  @Column(name = "id_no")
+  @Size(min = 8, max = 9)
+  private String idNo;
+
+  @Column(name = "cost_center_id")
+  @NotNull
+  private Long costCenterId;
+
+  @ManyToOne
+  @JoinColumn(name = "role_id", referencedColumnName = "id")
+  private Role role;
 
   public User() {}
 
-  public User(String username, String email, String password) {
+  public User(
+      String username,
+      String email,
+      String password,
+      String name,
+      String surname,
+      String passportNo,
+      String idNo,
+      Long costCenterId) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.name = name;
+    this.surname = surname;
+    this.passportNo = passportNo;
+    this.idNo = idNo;
+    this.costCenterId = costCenterId;
   }
 
   public Long getId() {
@@ -88,11 +110,51 @@ public class User {
     this.password = password;
   }
 
-  public Set<Role> getRoles() {
-    return roles;
+  public Role getRole() {
+    return role;
   }
 
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
+  public void setRole(Role role) {
+    this.role = role;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getSurname() {
+    return surname;
+  }
+
+  public void setSurname(String surname) {
+    this.surname = surname;
+  }
+
+  public String getPassportNo() {
+    return passportNo;
+  }
+
+  public void setPassportNo(String passportNo) {
+    this.passportNo = passportNo;
+  }
+
+  public String getIdNo() {
+    return idNo;
+  }
+
+  public void setIdNo(String idNo) {
+    this.idNo = idNo;
+  }
+
+  public Long getCostCenterId() {
+    return costCenterId;
+  }
+
+  public void setCostCenterId(Long costCenterId) {
+    this.costCenterId = costCenterId;
   }
 }

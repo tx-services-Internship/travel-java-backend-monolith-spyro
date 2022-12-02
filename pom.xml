@@ -59,9 +59,19 @@
                 <version>${hibernate-validator.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-core</artifactId>
-                <version>${assertj-core.version}</version>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>6.2.3.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>4.5.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -140,7 +150,7 @@
                     <configuration>
                         <java>
                             <googleJavaFormat>
-                                <version>1.7</version>
+                                <version>1.15.0</version>
                                 <style>GOOGLE</style>
                             </googleJavaFormat>
                         </java>

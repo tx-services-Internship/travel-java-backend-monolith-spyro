@@ -1,5 +1,6 @@
 package com.tx.travel.controller;
 
+import com.tx.travel.commons.oauth.security.ERole;
 import com.tx.travel.model.Role;
 import com.tx.travel.model.User;
 import com.tx.travel.payload.request.LoginRequest;
@@ -12,7 +13,6 @@ import com.tx.travel.service.AuthService;
 import com.tx.travel.service.exception.EmailAlreadyExistsException;
 import com.tx.travel.service.exception.UsernameAlreadyExistsException;
 import java.util.List;
-import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -77,7 +77,15 @@ public class AuthController {
         .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
         .body(
             new UserInfoResponse(
-                userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                userDetails.getPassportNo(),
+                userDetails.getIdNo(),
+                userDetails.getName(),
+                userDetails.getSurname(),
+                userDetails.getCostCenterId(),
+                roles));
   }
 
   @PostMapping("/signup")
@@ -95,13 +103,16 @@ public class AuthController {
         new User(
             signUpRequest.getUsername(),
             signUpRequest.getEmail(),
-            encoder.encode(signUpRequest.getPassword()));
+            encoder.encode(signUpRequest.getPassword()),
+            signUpRequest.getName(),
+            signUpRequest.getSurname(),
+            signUpRequest.getPassportNo(),
+            signUpRequest.getIdNo(),
+            signUpRequest.getCostCenterId());
 
-    final Set<String> strRoles = signUpRequest.getRole();
+    final Role role = authService.getRole(ERole.ROLE_EMPLOYEE);
 
-    final Set<Role> roles = authService.addRoles(strRoles);
-
-    user.setRoles(roles);
+    user.setRole(role);
 
     authService.addUser(user);
 
