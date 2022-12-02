@@ -3,9 +3,9 @@ package com.tx.travel.security.services;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tx.travel.model.User;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +19,12 @@ public class UserDetailsImpl implements UserDetails {
 
   private String email;
 
+  private String passportNo;
+  private String idNo;
+  private String name;
+  private String surname;
+  private Long costCenterId;
+
   @JsonIgnore private String password;
 
   private Collection<? extends GrantedAuthority> authorities;
@@ -27,23 +33,60 @@ public class UserDetailsImpl implements UserDetails {
       Long id,
       String username,
       String email,
+      String passportNo,
+      String idNo,
+      String name,
+      String surname,
+      Long costCenterId,
       String password,
       Collection<? extends GrantedAuthority> authorities) {
     this.id = id;
     this.username = username;
     this.email = email;
+    this.passportNo = passportNo;
+    this.idNo = idNo;
+    this.name = name;
+    this.surname = surname;
+    this.costCenterId = costCenterId;
     this.password = password;
     this.authorities = authorities;
   }
 
   public static UserDetailsImpl build(User user) {
     List<GrantedAuthority> authorities =
-        user.getRoles().stream()
-            .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-            .collect(Collectors.toList());
+        Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName().name()));
 
     return new UserDetailsImpl(
-        user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);
+        user.getId(),
+        user.getUsername(),
+        user.getEmail(),
+        user.getPassportNo(),
+        user.getIdNo(),
+        user.getName(),
+        user.getSurname(),
+        user.getCostCenterId(),
+        user.getPassword(),
+        authorities);
+  }
+
+  public String getPassportNo() {
+    return passportNo;
+  }
+
+  public String getIdNo() {
+    return idNo;
+  }
+
+  public Long getCostCenterId() {
+    return costCenterId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getSurname() {
+    return surname;
   }
 
   @Override

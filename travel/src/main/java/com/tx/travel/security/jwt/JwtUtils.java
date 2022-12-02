@@ -8,6 +8,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -23,6 +25,12 @@ public class JwtUtils {
 
   @Value("${travel.app.jwtSecret}")
   private String jwtSecret;
+
+  @Value("${travel.app.maxAge}")
+  private Long maxAge;
+
+  @Value("${travel.app.cookiePath}")
+  private String cookiePath;
 
   @Value("${travel.app.jwtExpirationMs}")
   private int jwtExpirationMs;
@@ -40,19 +48,29 @@ public class JwtUtils {
   }
 
   public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-    String jwt = generateTokenFromUsername(userPrincipal.getUsername());
+    String jwt = generateTokenFromUser(userPrincipal);
     return ResponseCookie.from(jwtCookie, jwt)
-        .path("/api")
-        .maxAge(24 * 60 * 60L)
+        .path(cookiePath)
+        .maxAge(maxAge)
+        .secure(true)
+        .httpOnly(true)
+        .build();
+  }
+
+  public ResponseCookie generateJwtCookieFromToken(String jwt) {
+    return ResponseCookie.from(jwtCookie, jwt)
+        .path(cookiePath)
+        .maxAge(maxAge)
         .httpOnly(true)
         .build();
   }
 
   public ResponseCookie getCleanJwtCookie() {
-    return ResponseCookie.from(jwtCookie, null).path("/api").build();
+    return ResponseCookie.from(jwtCookie, null).path(cookiePath).build();
   }
 
   public String getUserNameFromJwtToken(String token) {
+
     return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
   }
 
@@ -75,9 +93,18 @@ public class JwtUtils {
     return false;
   }
 
-  public String generateTokenFromUsername(String username) {
+  public String generateTokenFromUser(UserDetailsImpl userPrincipal) {
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("id", userPrincipal.getId().toString());
+    claims.put("name", userPrincipal.getName());
+    claims.put("surname", userPrincipal.getSurname());
+    claims.put("passportNo", userPrincipal.getPassportNo());
+    claims.put("idNo", userPrincipal.getIdNo());
+    claims.put("costCenterId", userPrincipal.getCostCenterId().toString());
+
     return Jwts.builder()
-        .setSubject(username)
+        .setClaims(claims)
+        .setSubject(userPrincipal.getUsername())
         .setIssuedAt(new Date())
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
         .signWith(SignatureAlgorithm.HS512, jwtSecret)
