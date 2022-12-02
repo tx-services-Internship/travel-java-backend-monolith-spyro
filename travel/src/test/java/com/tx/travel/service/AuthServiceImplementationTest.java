@@ -26,10 +26,9 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
   @InjectMocks AuthService sut;
 
   @DisplayName(
-      "given existing username" +
-      " when user was searched" +
-      " then throw UsernameAlreadyExistsException"
-  )
+      "given existing username"
+          + " when user was searched"
+          + " then throw UsernameAlreadyExistsException")
   @Test
   public void findByUsernameOrEmail_thrownUserNameAlreadyExistedException() {
 
@@ -53,10 +52,9 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
   }
 
   @DisplayName(
-      "given existing email" +
-      " when user was searched" +
-      " then throw EmailAlreadyExistsException"
-  )
+      "given existing email"
+          + " when user was searched"
+          + " then throw EmailAlreadyExistsException")
   @Test
   public void findByUsernameOrEmail_thrownEmailAlreadyExistedException() {
 
@@ -78,11 +76,7 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
     assertThrows(EmailAlreadyExistsException.class, () -> sut.findByUsernameOrEmail("", email));
   }
 
-  @DisplayName(
-          "given string admin" +
-          " when role was searched" +
-          " then return admin role"
-  )
+  @DisplayName("given string admin" + " when role was searched" + " then return admin role")
   @Test
   public void addRoleAdmin_success() {
 
@@ -95,11 +89,7 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
     assertEquals(result, role);
   }
 
-  @DisplayName(
-          "given string mod" +
-          " when role was searched" +
-          " then return office manager role"
-  )
+  @DisplayName("given string mod" + " when role was searched" + " then return office manager role")
   @Test
   public void addRoleOM_success() {
 
@@ -113,10 +103,9 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
   }
 
   @DisplayName(
-          "given any string different from admin and mod" +
-          " when role was searched" +
-          " then return employee role"
-  )
+      "given any string different from admin and mod"
+          + " when role was searched"
+          + " then return employee role")
   @Test
   public void addRoleEmpl_success() {
 
@@ -130,10 +119,7 @@ public class AuthServiceImplementationTest extends AbstractUnitTestBase {
   }
 
   @DisplayName(
-          "given null string" +
-          " when role was searched" +
-          " then throws RoleNotFoundException"
-  )
+      "given null string" + " when role was searched" + " then throws RoleNotFoundException")
   @Test
   public void addRole_null() {
 
