@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 @Entity
 @Table(
-    name = "daily_allowance",
+    name = "daily_allowances",
     uniqueConstraints = {@UniqueConstraint(columnNames = "region")})
 public class DailyAllowance {
   @Id
