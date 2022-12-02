@@ -108,7 +108,7 @@ public class AuthController {
             signUpRequest.getSurname(),
             signUpRequest.getPassportNo(),
             signUpRequest.getIdNo(),
-                signUpRequest.getCostCenterId());
+            signUpRequest.getCostCenterId());
 
     final Role role = authService.getRole(ERole.ROLE_EMPLOYEE);
 

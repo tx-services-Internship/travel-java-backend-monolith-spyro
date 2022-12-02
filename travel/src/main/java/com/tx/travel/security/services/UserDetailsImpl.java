@@ -60,13 +60,17 @@ public class UserDetailsImpl implements UserDetails {
         user.getId(),
         user.getUsername(),
         user.getEmail(),
-        user.getPassport_no(),
-        user.getId_no(),
+        user.getPassportNo(),
+        user.getIdNo(),
         user.getName(),
         user.getSurname(),
-        user.getCost_center_id(),
+        user.getCostCenterId(),
         user.getPassword(),
         authorities);
+  }
+
+  public String getPassportNo() {
+    return passportNo;
   }
 
   public String getIdNo() {

@@ -17,7 +17,6 @@ public class AuthService {
   private final UserRepository userRepository;
 
   private final RoleRepository roleRepository;
-  public static final String ERROR_ROLE_NOT_FOUND = "Error: Role is not found.";
 
   public AuthService(final UserRepository userRepository, final RoleRepository roleRepository) {
     this.userRepository = userRepository;
@@ -25,7 +24,7 @@ public class AuthService {
   }
 
   public void findByUsernameOrEmail(@NotNull final String username, @NotNull final String email)
-      throws UsernameAlreadyExistsException,EmailAlreadyExistsException {
+      throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
     final Optional<User> userByUsername = userRepository.findByUsername(username);
     if (userByUsername.isPresent()) {
       throw new UsernameAlreadyExistsException(username);
@@ -37,9 +36,7 @@ public class AuthService {
   }
 
   public Role getRole(ERole role) {
-      return roleRepository
-              .findByName(role)
-              .orElseThrow(() -> new RoleNotFoundException(role));
+    return roleRepository.findByName(role).orElseThrow(() -> new RoleNotFoundException(role));
   }
 
   public User addUser(final User user) {

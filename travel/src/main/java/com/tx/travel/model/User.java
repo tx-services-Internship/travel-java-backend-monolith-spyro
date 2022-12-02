@@ -40,17 +40,18 @@ public class User {
   private String surname;
 
   @NotBlank
-  @Column(name="passport_no")
+  @Column(name = "passport_no")
   @Size(min = 8, max = 10)
   private String passportNo;
 
   @NotBlank
-  @Column(name="id_no")
+  @Column(name = "id_no")
   @Size(min = 8, max = 9)
   private String idNo;
 
-  @Column(name="cost_center_id")
-  @NotNull private Long costCenterId;
+  @Column(name = "cost_center_id")
+  @NotNull
+  private Long costCenterId;
 
   @ManyToOne
   @JoinColumn(name = "role_id", referencedColumnName = "id")

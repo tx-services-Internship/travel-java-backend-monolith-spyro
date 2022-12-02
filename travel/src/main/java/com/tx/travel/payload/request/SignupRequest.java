@@ -1,8 +1,8 @@
 package com.tx.travel.payload.request;
 
-import java.util.Set;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class SignupRequest {
@@ -35,8 +35,7 @@ public class SignupRequest {
   @Size(max = 20)
   private String surname;
 
-  @NotNull
-  private Long costCenterId;
+  @NotNull private Long costCenterId;
 
   public String getPassportNo() {
     return passportNo;
@@ -101,5 +100,4 @@ public class SignupRequest {
   public void setPassword(String password) {
     this.password = password;
   }
-
 }
